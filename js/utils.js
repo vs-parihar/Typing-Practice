@@ -1,11 +1,6 @@
 const get = (id) => document.getElementById(id);
 
-const sm = (id) => {
-    document.querySelectorAll('.m').forEach(m => m.classList.remove('active'));
-    get(id).classList.add('active');
-};
-
-const nm = (t) => t ? t.normalize('NFC').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/़/g, '').replace(/ाे/g, 'ो').replace(/ाै/g, 'ौ').trim() : "";
+const nm = (t) => t ? t.normalize('NFC').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/ाे/g, 'ो').replace(/ाै/g, 'ौ').trim() : "";
 
 const svC = () => localStorage.setItem('tp_v41', JSON.stringify({
     un: get('un').value,
@@ -24,28 +19,25 @@ const svC = () => localStorage.setItem('tp_v41', JSON.stringify({
     lib
 }));
 
-const rlb = () => {
-    const s = get('cms'), l = get('ll');
-    s.innerHTML = '';
-    l.innerHTML = '';
-    lib.forEach((m, i) => {
-        s.innerHTML += `<option value="${i}">${m.t}</option>`;
-        l.innerHTML += `<div style="display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid var(--bd)"><span>${m.t}</span><button class="bs" onclick="rml(${i})">X</button></div>`
-    })
-};
-
-const al = () => {
-    const t = get('ct').value, x = get('cx').value;
-    if (!x.trim()) return;
-    lib.push({ t: t || (x.slice(0, 12) + '...'), x: x.trim() });
-    get('ct').value = '';
-    get('cx').value = '';
+const ldC = () => {
+    const c = JSON.parse(localStorage.getItem('tp_v41'));
+    if (!c) { tp(false); return }
+    get('un').value = c.un;
+    get('tl').value = c.tl;
+    get('ime').value = c.ime || 'e';
+    get('ip').value = c.ip || 5;
+    get('pt').checked = c.pt;
+    get('bk').checked = c.bk;
+    get('hi').checked = c.hi;
+    get('as').checked = c.as;
+    get('wl').checked = c.wl;
+    get('wv').value = c.wv;
+    get('wv').style.display = c.wl ? 'inline' : 'none';
+    if (c.dark) document.body.classList.add('dark');
+    sc = c.sc || 1;
+    tfs = c.tfs || 1.1;
+    lib = c.lib || [];
     rlb();
-    svC()
-};
-
-const rml = (i) => {
-    lib.splice(i, 1);
-    rlb();
-    svC()
+    tp(c.pt);
+    ui('');
 };

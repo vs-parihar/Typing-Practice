@@ -9,17 +9,28 @@
 <body class="dark">
     <div id="cfg" class="m active">
         <div class="c" style="max-width:700px">
-            <div class="cb" data-type="h"></div>
             <h2 style="margin:0 0 12px 0;color:var(--pri);font-size:1.4rem">Typing Master Pro</h2>
             <div class="g">
                 <div class="f-col"><span>Name</span><input id="un" value="Guest"></div>
-                <div class="f-col"><span>Time</span><select id="tl"><option value="1">1 Min</option><option value="5">5 Min</option><option value="10" selected>10 Min</option></select></div>
-                <div class="f-col"><span>Keyboard</span><select id="ime"><option value="e">English</option><option value="i">Inscript</option><option value="p">Indic</option><option value="g">Remington Gail</option><option value="c">Remington CBI</option></select></div>
+                <div class="f-col"><span>Time</span><select id="tl">
+                    <option value="1">1 Min</option>
+                    <option value="5">5 Min</option>
+                    <option value="10" selected>10 Min</option>
+                </select></div>
+                <div class="f-col"><span>Keyboard</span><select id="ime">
+                    <option value="e">English</option>
+                    <option value="i">Inscript</option>
+                    <option value="p">Indic</option>
+                    <option value="g">Remington Gail</option>
+                    <option value="c">Remington CBI</option>
+                </select></div>
                 <div class="f-col"><span>Ignore Err %</span><input type="number" id="ip" value="5"></div>
                 <div class="f-col"><span>Mode</span><label class="chk-row" style="height:36px"><input type="checkbox" id="pt" onchange="tp(this.checked)"> Custom Matter</label></div>
                 <div class="f-col du"><span>Playlist</span><select id="ps" onchange="lp(this.value)"></select></div>
                 <div class="f-col du"><span>Matter</span><select id="ms"></select></div>
-                <div class="f-col cu" style="display:none"><span>Library</span><div style="display:flex;gap:6px"><select id="cms"></select><button class="bs" onclick="sm('lib')">Library</button></div></div>
+                <div class="f-col cu" style="display:none"><span>Library</span>
+                    <div style="display:flex;gap:6px"><select id="cms"></select><button class="bs" onclick="sm('lib')">Library</button></div>
+                </div>
             </div>
             <div class="cg">
                 <label class="chk-row"><input type="checkbox" id="wl" onchange="get('wv').style.display=this.checked?'inline':'none'"> Words Limit</label>
@@ -47,7 +58,7 @@
         <div class="c" style="max-width:320px;text-align:center">
             <h3 style="margin-top:0">Discard Progress?</h3>
             <p>Current session data will be lost.</p>
-            <div style="flex:display;gap:10px">
+            <div style="display:flex;gap:10px">
                 <button class="bp" onclick="sm('cfg')" style="background:#ef4444">Yes, Discard</button>
                 <button class="bp" onclick="get('confirm').classList.remove('active')" style="background:#475569">No, Continue</button>
             </div>
@@ -56,7 +67,9 @@
 
     <div id="typ" class="m">
         <div class="c">
-            <div class="nav-row"><button class="back-btn" onclick="get('confirm').classList.add('active')">←</button><div class="cb" data-type="f"></div></div>
+            <div class="nav-row"><button class="back-btn" onclick="get('confirm').classList.add('active')">←</button>
+                <div class="cb" data-type="f"></div>
+            </div>
             <div class="ls">
                 <div class="sc"><span class="sv" id="lt">00:00</span><span class="sl">Time Left</span></div>
                 <div class="sc"><span class="sv" id="ls">0 | 0</span><span class="sl">G | N WPM</span></div>
@@ -70,7 +83,9 @@
 
     <div id="res" class="m">
         <div class="c">
-            <div class="nav-row"><button class="back-btn" onclick="st()">←</button><div class="cb" data-type="f"></div></div>
+            <div class="nav-row"><button class="back-btn" onclick="st()">←</button>
+                <div class="cb" data-type="f"></div>
+            </div>
             <h3 style="margin:0 0 10px 0">Performance Analysis</h3>
             <div id="rc"></div>
             <div id="dv"></div>

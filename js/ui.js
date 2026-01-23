@@ -6,40 +6,14 @@ const ui = (t) => {
     if (t === 's-') sc -= 0.05;
     document.documentElement.style.setProperty('--tfs', tfs + 'rem');
     document.body.style.setProperty('--sc', sc);
-    svC()
-}
+    svC();
+};
 
-document.querySelectorAll('.cb').forEach(c => {
-    const f = `<button onclick="ui('t+')">A+</button><button onclick="ui('t-')">A-</button>`;
-    c.innerHTML = `<button onclick="ui('d')">🌓</button>${c.dataset.type !== 'n' ? f : ''}<button onclick="ui('s+')">Z+</button><button onclick="ui('s-')">Z-</button>`
-});
-
-const svC = () => localStorage.setItem('tp_v41', JSON.stringify({un: get('un').value, tl: get('tl').value, ime: get('ime').value, ip: get('ip').value, pt: get('pt').checked, bk: get('bk').checked, hi: get('hi').checked, as: get('as').checked, wl: get('wl').checked, wv: get('wv').value, dark: document.body.classList.contains('dark'), sc, tfs, lib}));
-
-const ldC = () => {
-    const c = JSON.parse(localStorage.getItem('tp_v41'));
-    if (!c) {
-        tp(false);
-        return
-    }
-    get('un').value = c.un;
-    get('tl').value = c.tl;
-    get('ime').value = c.ime || 'e';
-    get('ip').value = c.ip || 5;
-    get('pt').checked = c.pt;
-    get('bk').checked = c.bk;
-    get('hi').checked = c.hi;
-    get('as').checked = c.as;
-    get('wl').checked = c.wl;
-    get('wv').value = c.wv;
-    get('wv').style.display = c.wl ? 'inline' : 'none';
-    if (c.dark) document.body.classList.add('dark'); else document.body.classList.remove('dark');
-    sc = c.sc || 1;
-    tfs = c.tfs || 1.1;
-    lib = c.lib || [];
-    rlb();
-    tp(c.pt);
-    ui('')
+const setupUIButtons = () => {
+    document.querySelectorAll('.cb').forEach(c => {
+        const f = `<button onclick="ui('t+')">A+</button><button onclick="ui('t-')">A-</button>`;
+        c.innerHTML = `<button onclick="ui('d')">🌓</button>${c.dataset.type !== 'n' ? f : ''}<button onclick="ui('s+')">Z+</button><button onclick="ui('s-')">Z-</button>`;
+    });
 };
 
 const rlb = () => {
@@ -48,34 +22,55 @@ const rlb = () => {
     l.innerHTML = '';
     lib.forEach((m, i) => {
         s.innerHTML += `<option value="${i}">${m.t}</option>`;
-        l.innerHTML += `<div style="display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid var(--bd)"><span>${m.t}</span><button class="bs" onclick="rml(${i})">X</button></div>`
-    })
+        l.innerHTML += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid var(--bd)">
+        <span style="font-size:0.85rem">${m.t}</span>
+        <div style="display:flex;gap:4px">
+        <button class="bs" onclick="edl(${i})">Edit</button>
+        <button class="bs" onclick="rml(${i})" style="color:#ef4444">X</button>
+        </div>
+        </div>`;
+    });
+};
+
+const tp = (v) => {
+    document.querySelectorAll('.du').forEach(e => e.style.display = v ? 'none' : 'flex');
+    document.querySelectorAll('.cu').forEach(e => e.style.display = v ? 'flex' : 'none');
 };
 
 const al = () => {
     const t = get('ct').value, x = get('cx').value;
     if (!x.trim()) return;
-    lib.push({t: t || (x.slice(0, 12) + '...'), x: x.trim()});
+    if(editIdx > -1) {
+        lib[editIdx] = {t: t || (x.slice(0, 12) + '...'), x: x.trim()};
+        editIdx = -1;
+        get('lib-save-btn').textContent = "Add to Library";
+    } else {
+        lib.push({t: t || (x.slice(0, 12) + '...'), x: x.trim()});
+    }
     get('ct').value = '';
     get('cx').value = '';
     rlb();
-    svC()
+    svC();
+};
+
+const edl = (i) => {
+    editIdx = i;
+    get('ct').value = lib[i].t;
+    get('cx').value = lib[i].x;
+    get('lib-save-btn').textContent = "Update Matter";
 };
 
 const rml = (i) => {
-    lib.splice(i, 1);
-    rlb();
-    svC()
-};
-
-const tp = (v) => {
-    document.querySelectorAll('.du').forEach(e => e.style.display = v ? 'none' : 'flex');
-    document.querySelectorAll('.cu').forEach(e => e.style.display = v ? 'flex' : 'none')
+    if(confirm("Delete this matter?")) {
+        lib.splice(i, 1);
+        rlb();
+        svC();
+    }
 };
 
 const lp = (n) => {
     const s = get('ms');
     s.innerHTML = '';
     pn = n;
-    if (plist[n]) plist[n].forEach((m, i) => s.innerHTML += `<option value="${i}">${m.title}</option>`)
+    if (plist[n]) plist[n].forEach((m, i) => s.innerHTML += `<option value="${i}">${m.title}</option>`);
 };

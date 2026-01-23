@@ -14,14 +14,19 @@
             <div class="g">
                 <div class="f-col"><span>Name</span><input id="un" value="Guest"></div>
                 <div class="f-col"><span>Time</span><select id="tl">
-                    <option value="1">1 Min</option><option value="5">5 Min</option>
-                    <option value="10" selected>10 Min</option><option value="15">15 Min</option>
-                    <option value="20">20 Min</option><option value="25">25 Min</option>
+                    <option value="1">1 Min</option>
+                    <option value="5">5 Min</option>
+                    <option value="10" selected>10 Min</option>
+                    <option value="15">15 Min</option>
+                    <option value="20">20 Min</option>
+                    <option value="25">25 Min</option>
                     <option value="30">30 Min</option>
                 </select></div>
                 <div class="f-col"><span>Keyboard</span><select id="ime">
-                    <option value="e">English</option><option value="i">Inscript</option>
-                    <option value="p">Indic</option><option value="g" selected>Remington Gail</option>
+                    <option value="e">English</option>
+                    <option value="i">Inscript</option>
+                    <option value="p">Indic</option>
+                    <option value="g" selected>Remington Gail</option>
                     <option value="c">Remington CBI</option>
                 </select></div>
                 <div class="f-col"><span>Ignore Err %</span><input type="number" id="ip" value="5"></div>
@@ -29,7 +34,9 @@
                 <div class="f-col du"><span>Playlist</span><select id="ps" onchange="lp(this.value)"></select></div>
                 <div class="f-col du"><span>Matter</span><select id="ms"></select></div>
                 <div class="f-col cu" style="display:none"><span>Library</span>
-                    <div style="display:flex;gap:6px"><select id="cms"></select><button class="bs" onclick="sm('lib')">Library</button></div>
+                    <div style="display:flex;gap:6px"><select id="cms"></select>
+                        <button class="bs" onclick="sm('lib')">Library</button>
+                    </div>
                 </div>
             </div>
             <div class="cg">
@@ -44,8 +51,7 @@
     </div>
 
     <div id="lib" class="m">
-        <div class="c" style="max-width:550px">
-            <h3>Custom Library</h3>
+        <div class="c" style="max-width:550px"><h3>Custom Library</h3>
             <div id="ll" style="max-height:220px;overflow-y:auto;margin-bottom:10px;border:1px solid var(--bd);border-radius:6px"></div>
             <input id="ct" placeholder="Title" style="margin-bottom:6px">
             <textarea id="cx" rows="5" placeholder="Paste matter..."></textarea>
@@ -57,7 +63,7 @@
     </div>
 
     <div id="confirm" class="m">
-        <div class="c" style="max-width:320px;text-align:center"><h3>Discard Progress?</h3>
+        <div class="c" style="max-width:320px;text-align:center"><h3 style="margin-top:0">Discard Progress?</h3>
             <p>Current session data will be lost.</p>
             <div style="display:flex;gap:10px">
                 <button class="bp" onclick="sm('cfg')" style="background:#ef4444">Yes, Discard</button>

@@ -3,27 +3,9 @@ const src = [{t: "Registry", u: "https://gist.githubusercontent.com/vs-parihar/8
 
 const get = (id) => document.getElementById(id);
 
+const nm = (t) => t ? t.normalize('NFC').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/ाे/g, 'ो').replace(/ाै/g, 'ौ').trim() : "";
+
 const sm = (id) => {
     document.querySelectorAll('.m').forEach(m => m.classList.remove('active'));
     get(id).classList.add('active');
 };
-
-const nm = (t) => t ? t.normalize('NFC').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/ाे/g, 'ो').replace(/ाै/g, 'ौ').trim() : "";
-
-const svC = () => localStorage.setItem('tp_v42', JSON.stringify({
-    un: get('un').value, 
-    tl: get('tl').value, 
-    ime: get('ime').value, 
-    ip: get('ip').value, 
-    pt: get('pt').checked, 
-    bk: get('bk').checked, 
-    hi: get('hi').checked, 
-    as: get('as').checked, 
-    wl: get('wl').checked, 
-    wv: get('wv').value, 
-    dark: document.body.classList.contains('dark'), 
-    sc, tfs, lib, 
-    ps_val: get('ps').value, 
-    ms_idx: get('ms').selectedIndex, 
-    cms_idx: get('cms').selectedIndex
-}));

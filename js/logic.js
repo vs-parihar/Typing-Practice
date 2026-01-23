@@ -1,165 +1,74 @@
-async function st() {
-    svC();
-    const b = get('sb'), ot = b.textContent;
-    let mName = "";
-    b.disabled = true;
-    b.textContent = "Wait...";
-    if (get('pt').checked) {
-        if (!lib.length) { b.textContent = ot; return (b.disabled = false); }
-        const sel = lib[get('cms').value];
-        cm = sel.x;
-        mName = sel.t;
-        pn = "Library";
-    } else {
-        const m = plist[pn] ? plist[pn][get('ms').value] : null;
-        mName = m ? m.title : "Matter";
-        try {
-            if (m && m.matter) cm = await (await fetch(m.matter)).text(); 
-            else if (m && m.raw_url) cm = await (await fetch(m.raw_url)).text(); 
-            else if (m && m.url) {
-                const d = await (await fetch(`https://archive.org/metadata/${m.url.split('/').pop()}`)).json();
-                cm = (d.metadata.description || m.title).replace(/<[^>]*>/g, '');
-            } else cm = m ? m.title : "";
-        } catch (e) { cm = m ? m.title : ""; }
-    }
-    setup(cm, mName);
-    b.disabled = false;
-    b.textContent = ot;
-}
+const svC = () => localStorage.setItem('tp_v42', JSON.stringify({un: get('un').value, tl: get('tl').value, ime: get('ime').value, ip: get('ip').value, pt: get('pt').checked, bk: get('bk').checked, hi: get('hi').checked, as: get('as').checked, wl: get('wl').checked, wv: get('wv').value, dark: document.body.classList.contains('dark'), sc, tfs, lib, ps_val: get('ps').value, ms_idx: get('ms').selectedIndex, cms_idx: get('cms').selectedIndex}));
 
-function setup(txt, mName) {
-    let w = txt.split(/\s+/).filter(x => x);
-    if (get('wl').checked) w = w.slice(0, parseInt(get('wv').value));
-    const fT = w.join(' ');
-    const tt = get('tt');
-    tt.scrollTop = 0;
-    tt.classList.toggle('as-on', get('as').checked);
-    tt.innerHTML = w.map(x => `<span>${x}</span>`).join('');
-    const iS = get('ime'), kName = iS.options[iS.selectedIndex].text;
-    get('typing-info').textContent = `${kName} • ${mName}`;
-    const i = get('ia');
-    i.value = '';
-    bsc = 0;
-    sm('typ');
-    i.focus();
-    imeS = {wI: false, dK: false, pK: '', nI: false};
-    stT = new Date();
-    const lim = get('tl').value * 60;
-    clearInterval(tmr);
-    tmr = setInterval(() => {
-        const e = Math.floor((new Date() - stT) / 1000), r = lim - e;
-        if (r <= 0) ft();
-        get('lt').textContent = `${Math.floor(r / 60)}:${(r % 60).toString().padStart(2, '0')}`;
-    }, 1000);
-
-    i.onkeydown = (e) => handleKeydown(e, i);
-    i.onbeforeinput = (v) => handleBeforeInput(v, i);
-    i.oninput = () => handleInput(i, fT);
-}
-
-// Logic parts split for clarity inside logic.js
-function handleKeydown(e, i) {
-    const mod = get('ime').value;
-    if (mod !== 'e' && e.code.startsWith('Numpad') && /[0-9]/.test(e.key)) {
-        imeS.nI = true;
-        const c = i, s = c.selectionStart, v = c.value, k = e.key;
-        const num = e.getModifierState('CapsLock') ? RM[k] : LM[k];
-        e.preventDefault();
-        c.value = v.slice(0, s) + num + v.slice(c.selectionEnd);
-        c.setSelectionRange(s + num.length, s + num.length);
-        c.dispatchEvent(new Event('input'));
-        return;
-    } else if (mod !== 'e' && /[0-9]/.test(e.key) && !e.ctrlKey && !e.altKey) {
-        imeS.nI = true;
-        const c = i, s = c.selectionStart, v = c.value, k = e.key;
-        const num = LM[k];
-        e.preventDefault();
-        c.value = v.slice(0, s) + num + v.slice(c.selectionEnd);
-        c.setSelectionRange(s + num.length, s + num.length);
-        c.dispatchEvent(new Event('input'));
-        return;
-    } else { imeS.nI = false; }
-    
-    if (mod === 'i' && e.ctrlKey && e.shiftKey) {
-        if (e.key === '!') { e.preventDefault(); insC(i, '\u200D'); }
-        if (e.key === '@') { e.preventDefault(); insC(i, '\u200C'); }
-    }
-    if (e.key === 'Backspace') {
-        imeS.wI = false;
-        imeS.pK = '';
-        const v = i.value, s = i.selectionStart;
-        if (mod === 'g' || mod === 'c') {
-            if (v.slice(s - 2, s) === '\u25cc\u093f') { e.preventDefault(); i.value = v.slice(0, s - 2) + v.slice(s); i.setSelectionRange(s - 2, s - 2); i.dispatchEvent(new Event('input')); return; }
-            if (v.charAt(s - 1) === '\u093f') { e.preventDefault(); i.value = v.slice(0, s - 2) + v.slice(s); i.setSelectionRange(s - 2, s - 2); i.dispatchEvent(new Event('input')); return; }
-        }
-        bsc++;
-        if (!get('bk').checked) e.preventDefault();
-    }
-}
-
-const insC = (i, c) => {
-    const st = i.selectionStart, v = i.value;
-    i.value = v.slice(0, st) + c + v.slice(i.selectionEnd);
-    i.setSelectionRange(st + c.length, st + c.length);
-    i.dispatchEvent(new Event('input'));
+const ldC = () => {
+    const c = JSON.parse(localStorage.getItem('tp_v42'));
+    if (!c) { tp(false); return; }
+    get('un').value = c.un;
+    get('tl').value = c.tl;
+    get('ime').value = c.ime || 'e';
+    get('ip').value = c.ip || 5;
+    get('pt').checked = c.pt;
+    get('bk').checked = c.bk;
+    get('hi').checked = c.hi;
+    get('as').checked = c.as;
+    get('wl').checked = c.wl;
+    get('wv').value = c.wv;
+    get('wv').style.display = c.wl ? 'inline' : 'none';
+    if (c.dark) document.body.classList.add('dark'); else document.body.classList.remove('dark');
+    sc = c.sc || 1;
+    tfs = c.tfs || 1.1;
+    lib = c.lib || [];
+    rlb();
+    tp(c.pt);
+    ui('');
 };
 
-function handleBeforeInput(v, i) {
-    if (imeS.nI) { v.preventDefault(); return; }
-    const mod = get('ime').value;
-    if (mod === 'e' || v.inputType.includes('delete')) return;
-    if (!v.data || v.data === ' ') { imeS.dK = false; imeS.wI = false; imeS.pK = ''; return; }
-    if (v.data.length > 1) return;
-    v.preventDefault();
-    let k = v.data, m = IM[mod][k] || k, char = m, st = i.selectionStart, en = i.selectionEnd, val = i.value;
-    if (mod !== 'e') {
-        let prv = val.slice(0, st);
-        if (prv.endsWith('्')) {
-            if (VM[char] !== undefined) { val = prv.slice(0, -1); st--; } else if (char === 'ा') { val = prv.slice(0, -1); st--; char = ''; }
-        }
-    }
-    if (mod === 'g' || mod === 'c') {
-        let p = val[st - 1];
-        if (k === 'f') { char = '\u25cc\u093f'; imeS.wI = true; } else if (imeS.wI) {
-            if (val.slice(st - 2, st) === '\u25cc\u093f') { val = val.slice(0, st - 2); st -= 2; char = char + '\u093f'; imeS.wI = false; }
-        }
-        if (k === 'k') { if (p === 'अ') char = (val = val.slice(0, -1), st--, 'आ'); else if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ओ'); else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ो'); }
-        if (k === 's') { if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ओ'); else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ो'); else if (p === 'ए') char = (val = val.slice(0, -1), st--, 'ऐ'); }
-        if (k === 'S') { if (p === 'आ') char = (val = val.slice(0, -1), st--, 'औ'); else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ौ'); }
-        if (k === 'W') { if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ऑ'); else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ॉ'); else if (p === 'ए') char = (val = val.slice(0, -1), st--, 'ऍ'); }
-        if (k === 'a' && p === 'ॉ') char = (val = val.slice(0, -1), st--, 'ँ');
-        if (k === 'Q') { if (p === 'उ') char = (val = val.slice(0, -1), st--, 'ऊ'); else if (p === 'प') char = (val = val.slice(0, -1), st--, 'फ'); else if (p === 'र') char = (val = val.slice(0, -1), st--, 'रु'); }
-    }
-    if (mod === 'p') {
-        let prev = val[st - 1];
-        if (prev && VM[char] !== undefined && !/\s/.test(prev)) char = VM[char];
-    }
-    i.value = val.slice(0, st) + char + val.slice(en);
-    i.setSelectionRange(st + char.length, st + char.length);
-    imeS.pK = k;
-    i.dispatchEvent(new Event('input'));
-}
-
-function handleInput(i, fT) {
-    const v = i.value, vW = v.split(/\s+/).filter(x => x), tW = fT.split(/\s+/), idxCur = vW.length ? vW.length - (v.endsWith(' ') ? 0 : 1) : 0;
-    let cw = 0;
-    get('tt').querySelectorAll('span').forEach((s, idx) => {
-        s.className = ''; s.style.background = '';
-        const u = v.split(/\s+/)[idx] || "";
-        if (idx < v.split(/\s+/).length - 1 || (idx === v.split(/\s+/).length - 1 && v.endsWith(' '))) {
-            const isC = nm(u) === nm(tW[idx] || "");
-            if (isC) cw++;
-            if (get('hi').checked) s.classList.add(isC ? 'cor' : 'inc');
-        }
-        if (idx === idxCur) {
-            if (get('hi').checked) s.style.background = 'rgba(79,70,229,0.3)';
-            if (get('as').checked) s.scrollIntoView({block: 'center', behavior: 'smooth'});
-        }
+const rlb = () => {
+    const s = get('cms'), l = get('ll');
+    s.innerHTML = '';
+    l.innerHTML = '';
+    lib.forEach((m, i) => {
+        s.innerHTML += `<option value="${i}">${m.t}</option>`;
+        l.innerHTML += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid var(--bd)">
+        <span style="font-size:0.85rem">${m.t}</span>
+        <div style="display:flex;gap:4px">
+        <button class="bs" onclick="edl(${i})">Edit</button>
+        <button class="bs" onclick="rml(${i})" style="color:#ef4444">X</button>
+        </div>
+        </div>`;
     });
-    const m = Math.max((new Date() - stT) / 60000, 0.01), gw = (v.length / 5) / m;
-    get('ls').textContent = `${Math.round(gw)} | ${Math.round(Math.max(0, gw - ((vW.length - cw) / m)))}`;
-    get('la').textContent = `${Math.round(vW.length ? cw / vW.length * 100 : 0)}% | ${vW.length}`;
-}
+};
+
+const al = () => {
+    const t = get('ct').value, x = get('cx').value;
+    if (!x.trim()) return;
+    if(editIdx > -1) {
+        lib[editIdx] = {t: t || (x.slice(0, 12) + '...'), x: x.trim()};
+        editIdx = -1;
+        get('lib-save-btn').textContent = "Add to Library";
+    } else {
+        lib.push({t: t || (x.slice(0, 12) + '...'), x: x.trim()});
+    }
+    get('ct').value = '';
+    get('cx').value = '';
+    rlb();
+    svC();
+};
+
+const edl = (i) => {
+    editIdx = i;
+    get('ct').value = lib[i].t;
+    get('cx').value = lib[i].x;
+    get('lib-save-btn').textContent = "Update Matter";
+};
+
+const rml = (i) => {
+    if(confirm("Delete this matter?")) {
+        lib.splice(i, 1);
+        rlb();
+        svC();
+    }
+};
 
 function ft() {
     clearInterval(tmr);
@@ -168,8 +77,8 @@ function ft() {
     tW.forEach((w, i) => {
         const u = vW[i] || "";
         if (i < vW.length) {
-            if (nm(u) !== nm(w)) { err++; dv += `<span class="inc">${w} </span>`; } 
-            else { cw++; dv += `<span class="cor">${w} </span>`; }
+            if (nm(u) !== nm(w)) { err++; dv += `<span class="inc">${w} </span>` } 
+            else { cw++; dv += `<span class="cor">${w} </span>` }
         }
     });
     const gW = (v.length / 5) / dur, gK = v.length * (60 / dur), ac = vW.length ? (cw / vW.length) * 100 : 0, m1N = Math.max(0, gW - (err / dur)), p2 = err * 10, m2N = Math.max(0, gW - (p2 / dur)), ign = Math.floor(tW.length * iP / 100), ne3 = Math.max(0, err - ign), p3 = ne3 * 10, m3N = Math.max(0, gW - (p3 / dur));

@@ -1,26 +1,3 @@
-const ldC = () => {
-    const c = JSON.parse(localStorage.getItem('tp_v42'));
-    if (!c) { tp(false); return }
-    get('un').value = c.un;
-    get('tl').value = c.tl;
-    get('ime').value = c.ime || 'e';
-    get('ip').value = c.ip || 5;
-    get('pt').checked = c.pt;
-    get('bk').checked = c.bk;
-    get('hi').checked = c.hi;
-    get('as').checked = c.as;
-    get('wl').checked = c.wl;
-    get('wv').value = c.wv;
-    get('wv').style.display = c.wl ? 'inline' : 'none';
-    if (c.dark) document.body.classList.add('dark'); else document.body.classList.remove('dark');
-    sc = c.sc || 1;
-    tfs = c.tfs || 1.1;
-    lib = c.lib || [];
-    rlb();
-    tp(c.pt);
-    ui('')
-};
-
 async function init() {
     ldC();
     for (let s of src) {
@@ -34,9 +11,9 @@ async function init() {
                 }
             } else {
                 if (!plist[s.t]) plist[s.t] = [];
-                Object.values(d.files).forEach(f => plist[s.t].push({title: f.filename, matter: f.raw_url}))
+                Object.values(d.files).forEach(f => plist[s.t].push({ title: f.filename, matter: f.raw_url }))
             }
-        } catch (e) {}
+        } catch (e) { }
     }
     const pS = get('ps');
     Object.keys(plist).forEach(k => pS.innerHTML += `<option value="${k}">${k}</option>`);
@@ -49,6 +26,12 @@ async function init() {
     } else if (pS.options.length) {
         lp(pS.value)
     }
+
+    // Initialize Control Buttons
+    document.querySelectorAll('.cb').forEach(c => {
+        const f = `<button onclick="ui('t+')">A+</button><button onclick="ui('t-')">A-</button>`;
+        c.innerHTML = `<button onclick="ui('d')">🌓</button>${c.dataset.type !== 'n' ? f : ''}<button onclick="ui('s+')">Z+</button><button onclick="ui('s-')">Z-</button>`
+    });
 }
 
 window.onload = init;

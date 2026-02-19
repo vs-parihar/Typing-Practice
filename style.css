@@ -150,7 +150,9 @@ body {
     font-size: 0.8rem
 }
 
-select, textarea, input:not([type="checkbox"]) {
+select,
+textarea,
+input:not([type="checkbox"]) {
     width: 100%;
     padding: 8px;
     border: 1px solid var(--bd);
@@ -163,7 +165,9 @@ select, textarea, input:not([type="checkbox"]) {
     font-family: var(--font-main)
 }
 
-.ta, #ia, #dv {
+.ta,
+#ia,
+#dv {
     font-size: var(--tfs);
     line-height: 1.5;
     border: 1px solid var(--bd);

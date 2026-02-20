@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -158,9 +157,7 @@
             font-size: 0.8rem
         }
 
-        select,
-        textarea,
-        input:not([type="checkbox"]) {
+        select, textarea, input:not([type="checkbox"]) {
             width: 100%;
             padding: 8px;
             border: 1px solid var(--bd);
@@ -173,11 +170,9 @@
             font-family: var(--font-main)
         }
 
-        .ta,
-        #ia,
-        #dv {
+        .ta, #ia, #dv {
             font-size: var(--tfs);
-            line-height: 1.5;
+            line-height: 1.6;
             border: 1px solid var(--bd);
             padding: 12px;
             margin: 8px 0;
@@ -190,14 +185,16 @@
         .ta {
             height: 25vh;
             overflow-y: auto;
-            white-space: normal
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .ta span {
             display: inline-block;
-            margin-right: 0.5ch;
+            margin-right: 0.4ch;
             padding: 0 2px;
-            border-radius: 3px
+            border-radius: 3px;
         }
 
         .as-on {
@@ -205,9 +202,11 @@
         }
 
         #ia {
-            height: 10vh;
+            height: 12vh;
             resize: none;
-            white-space: pre-wrap
+            white-space: pre-wrap;
+            overflow-y: auto;
+            line-height: 1.6;
         }
 
         #dv {
@@ -216,15 +215,9 @@
             white-space: pre-wrap
         }
 
-        .cor {
-            color: #10b981
-        }
-
-        .inc {
-            color: #ef4444;
-            text-decoration: underline;
-            font-weight: bold
-        }
+        .cor { color: #039660 }
+        .inc { color: #ef4444; text-decoration: underline; font-weight: bold }
+        .active-word { background: rgba(79, 70, 229, 0.18); border-radius: 3px; }
 
         #rc {
             display: grid;
@@ -303,12 +296,9 @@
             align-items: center
         }
 
-        #confirm {
-            z-index: 200
-        }
+        #confirm { z-index: 200 }
     </style>
 </head>
-
 <body class="dark">
     <div id="cfg" class="m active">
         <div class="c" style="max-width:700px">
@@ -333,59 +323,42 @@
                         <option value="c">CBI</option>
                     </select></div>
                 <div class="f-col"><span>Ignore Err %</span><input type="number" id="ip" value="5"></div>
-                <div class="f-col"><span>Mode</span><label class="chk-row" style="height:36px"><input type="checkbox"
-                            id="pt" onchange="tp(this.checked)"> Custom Matter</label></div>
+                <div class="f-col"><span>Mode</span><label class="chk-row" style="height:36px"><input type="checkbox" id="pt" onchange="tp(this.checked)"> Custom Matter</label></div>
                 <div class="f-col du"><span>Playlist</span><select id="ps" onchange="lp(this.value)"></select></div>
                 <div class="f-col du"><span>Matter</span><select id="ms"></select></div>
                 <div class="f-col cu" style="display:none"><span>Library</span>
-                    <div style="display:flex;gap:6px"><select id="cms"></select><button class="bs"
-                            onclick="sm('lib')">Library</button></div>
+                    <div style="display:flex;gap:6px"><select id="cms"></select><button class="bs" onclick="sm('lib')">Library</button></div>
                 </div>
             </div>
-            <div class="cg"><label class="chk-row"><input type="checkbox" id="wl"
-                        onchange="get('wv').style.display=this.checked?'inline':'none'"> Words Limit</label><input
-                    type="number" id="wv" value="50" style="width:65px;display:none;padding:4px"><label
-                    class="chk-row"><input type="checkbox" id="bk" checked> Backspace</label><label
-                    class="chk-row"><input type="checkbox" id="hi" checked> Highlight</label><label
-                    class="chk-row"><input type="checkbox" id="as" checked> Auto Scroll</label></div><button class="bp"
-                id="sb" onclick="st()">Start Practice</button>
+            <div class="cg"><label class="chk-row"><input type="checkbox" id="wl" onchange="get('wv').style.display=this.checked?'inline':'none'"> Words Limit</label><input type="number" id="wv" value="50" style="width:65px;display:none;padding:4px"><label class="chk-row"><input type="checkbox" id="bk" checked> Backspace</label><label class="chk-row"><input type="checkbox" id="hi" checked> Highlight</label><label class="chk-row"><input type="checkbox" id="as" checked> Auto Scroll</label></div><button class="bp" id="sb" onclick="st()">Start Practice</button>
         </div>
     </div>
     <div id="lib" class="m">
         <div class="c" style="max-width:550px">
             <h3>Custom Library</h3>
-            <div id="ll" style="max-height:220px;overflow-y:auto;margin-bottom:10px;border:1px solid var(--bd);border-radius:6px"></div>
-            <input id="ct" placeholder="Title" style="margin-bottom:6px"><textarea id="cx" rows="5"
-                placeholder="Paste matter..."></textarea>
-            <div style="display:flex;gap:8px;margin-top:8px"><button id="lib-save-btn" class="bp" onclick="al()"
-                    style="margin-top:0">Add to Library</button><button class="bp" onclick="sm('cfg')"
-                    style="background:#475569;margin-top:0">Back</button></div>
+            <div id="ll" style="max-height:220px;overflow-y:auto;margin-bottom:10px;border:1px solid var(--bd);border-radius:6px"></div><input id="ct" placeholder="Title" style="margin-bottom:6px"><textarea id="cx" rows="5" placeholder="Paste matter..."></textarea>
+            <div style="display:flex;gap:8px;margin-top:8px"><button id="lib-save-btn" class="bp" onclick="al()" style="margin-top:0">Add to Library</button><button class="bp" onclick="sm('cfg')" style="background:#475569;margin-top:0">Back</button></div>
         </div>
     </div>
     <div id="confirm" class="m">
         <div class="c" style="max-width:320px;text-align:center">
             <h3 style="margin-top:0">Discard Progress?</h3>
             <p>Current session data will be lost.</p>
-            <div style="display:flex;gap:10px"><button class="bp" onclick="sm('cfg')"
-                    style="background:#ef4444">Yes, Discard</button><button class="bp"
-                    onclick="get('confirm').classList.remove('active')" style="background:#475569">No, Continue</button>
-            </div>
+            <div style="display:flex;gap:10px"><button class="bp" onclick="sm('cfg')" style="background:#ef4444">Yes, Discard</button><button class="bp" onclick="get('confirm').classList.remove('active')" style="background:#475569">No, Continue</button></div>
         </div>
     </div>
     <div id="typ" class="m">
         <div class="c">
             <div class="nav-row"><button class="back-btn" onclick="get('confirm').classList.add('active')">←</button>
-                <div id="typing-info" style="font-size:0.75rem;opacity:0.7;font-weight:bold;text-transform:uppercase">
-                </div>
+                <div id="typing-info" style="font-size:0.75rem;opacity:0.7;font-weight:bold;text-transform:uppercase"></div>
                 <div class="cb" data-type="f"></div>
             </div>
             <div class="ls">
                 <div class="sc"><span class="sv" id="lt">00:00</span><span class="sl">Time Left</span></div>
-                <div class="sc"><span class="sv" id="ls">0 | 0</span><span class="sl">G | N WPM</span></div>
+                <div class="sc"><span class="sv" id="ls" title="Gross | Net WPM">0 | 0</span><span class="sl">G | N WPM</span></div>
                 <div class="sc"><span class="sv" id="la">0% | 0</span><span class="sl">Acc | Words</span></div>
             </div>
-            <div id="tt" class="ta"></div><textarea id="ia" spellcheck="false"
-                placeholder="Start typing..."></textarea><button class="bp" onclick="ft()">Submit Results</button>
+            <div id="tt" class="ta"></div><textarea id="ia" spellcheck="false" placeholder="Start typing..."></textarea><button class="bp" onclick="ft()">Submit Results</button>
         </div>
     </div>
     <div id="res" class="m">
@@ -399,97 +372,303 @@
         </div>
     </div>
     <script>
-        const remGailMap = { 'q': 'ु', 'w': 'ू', 'e': 'म', 'r': 'त', 't': 'ज', 'y': 'ल', 'u': 'न', 'i': 'प', 'o': 'व', 'p': 'च', '[': 'ख्', ']': ',', 'a': 'ं', 's': 'े', 'd': 'क', 'f': 'ि', 'g': 'ह', 'h': 'ी', 'j': 'र', 'k': 'ा', 'l': 'स', ';': 'य', '\'': 'श्', 'z': '्र', 'x': 'ग', 'c': 'ब', 'v': 'अ', 'b': 'इ', 'n': 'द', 'm': 'उ', ',': 'ए', '.': 'ण्', '/': 'ध्', 'Q': 'फ', 'W': 'ॅ', 'E': 'म्', 'R': 'त्', 'T': 'ज्', 'Y': 'ल्', 'U': 'न्', 'I': 'प्', 'O': 'व्', 'P': 'च्', '{': 'क्ष्', '}': 'द्व', 'A': 'ा', 'S': 'ै', 'D': 'क्', 'F': 'थ्', 'G': 'ळ', 'H': 'भ्', 'J': 'श्र', 'K': 'ज्ञ', 'L': 'स्', ':': 'रू', '"': 'ष्', 'Z': 'र्', 'X': 'ग्', 'C': 'ब्', 'V': 'ट', 'B': 'ठ', 'N': 'छ', 'M': 'ड', '<': 'ढ', '>': 'झ', '?': 'घ्', '1': '१', '2': '२', '3': '३', '4': '४', '5': '५', '6': '६', '7': '७', '8': '८', '9': '९', '0': '०', '-': ';', '_': '.', '=': 'ृ', '!': '।', '@': '/', '#': ':', '$': '*', '%': '-', '^': '‘', '&': '\'', '*': 'द्ध', '(': 'त्र', ')': 'ऋ', '+': '्', '`': '़', '~': 'द्य', '\\': '(', '|': ')' }, remCBIMap = { 'q': 'ु', 'w': 'ू', 'e': 'म', 'r': 'त', 't': 'ज', 'y': 'ल', 'u': 'न', 'i': 'प', 'o': 'व', 'p': 'च', '[': 'ख्', ']': ',', 'a': 'ं', 's': 'े', 'd': 'क', 'f': 'ि', 'g': 'ह', 'h': 'ी', 'j': 'र', 'k': 'ा', 'l': 'स', ';': 'य', '\'': 'श्', 'z': '्र', 'x': 'ग', 'c': 'ब', 'v': 'अ', 'b': 'इ', 'n': 'द', 'm': 'उ', 'Q': 'फ', 'W': 'ॅ', 'E': 'म्', 'R': 'त्', 'T': 'ज्', 'Y': 'ल्', 'U': 'न्', 'I': 'प्', 'O': 'व्', 'P': 'च्', 'A': 'ा', 'S': 'ै', 'D': 'क्', 'F': 'थ्', 'G': 'ळ', 'H': 'भ्', 'J': 'श्र', 'K': 'ज्ञ', 'L': 'स्', 'Z': 'र्', 'X': 'ग्', 'C': 'ब्', 'V': 'ट', 'B': 'ठ', 'N': 'छ', 'M': 'ड', '-': ';', '=': 'ृ', '`': '़', '~': 'द्य', '!': '।', '@': '//', '#': ':', '$': '*', '%': '-', '^': '\'', '&': '\'', '*': 'द्ध', '(': 'त्र', ')': 'ऋ', '+': '्', '{': 'क्ष्', '}': 'द्व', '<': 'ढ', '>': 'झ', '?': 'घ्', '\\': '(', '|': ')', '.': 'ण्', '/': 'ध्', ',': 'ए', '_': '.', ':': 'रू', '"': 'ष्' }, inscriptMap = { 'q': 'ौ', 'w': 'ै', 'e': 'ा', 'r': 'ी', 't': 'ू', 'y': 'ब', 'u': 'ह', 'i': 'ग', 'o': 'द', 'p': 'ज', '[': 'ड', ']': '़', 'a': 'ो', 's': 'े', 'd': '्', 'f': 'ि', 'g': 'ु', 'h': 'प', 'j': 'र', 'k': 'क', 'l': 'त', ';': 'च', '\'': 'ट', 'z': 'ॆ', 'x': 'ं', 'c': 'म', 'v': 'न', 'b': 'व', 'n': 'ल', 'm': 'स', ',': ',', '.': '.', '/': 'य', 'Q': 'औ', 'W': 'ऐ', 'E': 'आ', 'R': 'ई', 'T': 'ऊ', 'Y': 'भ', 'U': 'ङ', 'I': 'घ', 'O': 'ध', 'P': 'झ', '{': 'ढ', '}': 'ञ', 'A': 'ओ', 'S': 'ए', 'D': 'अ', 'F': 'इ', 'G': 'उ', 'H': 'फ', 'J': 'ऱ', 'K': 'ख', 'L': 'थ', ':': 'छ', '"': 'ठ', 'Z': 'ऎ', 'X': 'ँ', 'C': 'ण', 'V': 'ऩ', 'B': 'ऴ', 'N': 'ळ', 'M': 'श', '<': 'ष', '>': '।', '?': 'य़', '1': '१', '2': '२', '3': '३', '4': '४', '5': '५', '6': '६', '7': '७', '8': '८', '9': '९', '0': '०', '!': 'ऍ', '@': 'ॅ', '#': '्र', '$': 'र्', '%': 'ज्ञ', '^': 'त्र', '&': 'क्ष', '*': 'श्र', '-': '-', '+': 'ऋ', '_': 'ः', '=': 'ृ', '~': 'ऒ', '`': 'ॊ', '(': ')', ')': '(', '|': 'ऑ', '\\': 'ॉ' }, indicMap = { 'a': 'अ', 'A': 'ा', 'b': 'ब', 'B': 'भ', 'c': 'च', 'C': 'छ', 'd': 'द', 'D': 'ध', 'e': 'े', 'E': 'ै', 'f': 'फ', 'F': 'फ़', 'g': 'ग', 'G': 'घ', 'h': 'ह', 'H': 'ः', 'i': 'ि', 'I': 'ी', 'j': 'ज', 'J': 'झ', 'k': 'क', 'K': 'ख', 'l': 'ल', 'L': 'ळ', 'm': 'म', 'M': 'ं', 'n': 'न', 'N': 'ण', 'o': 'ो', 'O': 'ौ', 'p': 'प', 'P': 'फ', 'r': 'र', 'R': 'ृ', 's': 'स', 'S': 'श', 't': 'त', 'T': 'थ', 'u': 'ु', 'U': 'ू', 'v': 'व', 'x': 'क्ष', 'X': 'ज्ञ', 'y': 'य', '.': '।', '_': '', '!': '!', '@': '@', '#': '#', '$': '$', '%': '%', '^': '^', '&': '&', '*': '*', '(': '(', ')': ')', '-': '-', '+': '+', '=': '=', '{': '{', '}': '}', '[': '[', ']': ']', '|': '|', '\\': '\\', '<': '<', '>': '>', '?': '?', '/': '/', '\'': '\'', '"': '"', '`': '`', '~': '~' }, IM = { 'g': remGailMap, 'c': remCBIMap, 'i': inscriptMap, 'p': indicMap }, VM = { 'अ': '', 'आ': 'ा', 'इ': 'ि', 'ई': 'ी', 'उ': 'ु', 'ऊ': 'ू', 'ए': 'े', 'ऐ': 'ै', 'ओ': 'ो', 'औ': 'ौ', 'ऋ': 'ृ', 'ऍ': 'ॅ' }, RM = { '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9', '0': '0' }, LM = { '1': '१', '2': '२', '3': '३', '4': '४', '5': '५', '6': '६', '7': '७', '8': '८', '9': '९', '0': '०' }; let cm = "", stT, tmr, fT = "", plist = {}, sc = 1, tfs = 1.1, bsc = 0, pn = "", lib = [], imeS = { wI: false, dK: false, pK: '', nI: false, altBypass: false }, editIdx = -1;
-        const src = [{ t: "Registry", u: "https://gist.githubusercontent.com/vs-parihar/80a61d62dd93b9e496a8db28ad9eee5c/raw/registry.json", m: 0 }, { t: "English", u: "https://api.github.com/gists/f5bf18c404ac6c4649b207a2cb83aefd", m: 1 }, { t: "Hindi", u: "https://api.github.com/gists/8e9911bc62761d6fb5407d8b76d67c97", m: 1 }, { t: "Local", u: "assets/matters", m: 2 }];
-        const get = (id) => document.getElementById(id), sm = (id) => { document.querySelectorAll('.m').forEach(m => m.classList.remove('active')); get(id).classList.add('active') };
-        const ui = (t) => { if (t === 'd') document.body.classList.toggle('dark'); if (t === 't+') tfs += 0.05; if (t === 't-') tfs -= 0.05; if (t === 's+') sc += 0.05; if (t === 's-') sc -= 0.05; document.documentElement.style.setProperty('--tfs', tfs + 'rem'); document.body.style.setProperty('--sc', sc); svC() };
-        document.querySelectorAll('.cb').forEach(c => { const f = `<button onclick="ui('t+')">A+</button><button onclick="ui('t-')">A-</button>`; c.innerHTML = `<button onclick="ui('d')">🌓</button>${c.dataset.type !== 'n' ? f : ''}<button onclick="ui('s+')">Z+</button><button onclick="ui('s-')">Z-</button>` });
-        const svC = () => localStorage.setItem('tp_v42', JSON.stringify({ un: get('un').value, tl: get('tl').value, ime: get('ime').value, ip: get('ip').value, pt: get('pt').checked, bk: get('bk').checked, hi: get('hi').checked, as: get('as').checked, wl: get('wl').checked, wv: get('wv').value, dark: document.body.classList.contains('dark'), sc, tfs, lib, ps_val: get('ps').value, ms_idx: get('ms').selectedIndex, cms_idx: get('cms').selectedIndex }));
-        const ldC = () => { const c = JSON.parse(localStorage.getItem('tp_v42')); if (!c) { tp(false); return } get('un').value = c.un; get('tl').value = c.tl; get('ime').value = c.ime || 'e'; get('ip').value = c.ip || 5; get('pt').checked = c.pt; get('bk').checked = c.bk; get('hi').checked = c.hi; get('as').checked = c.as; get('wl').checked = c.wl; get('wv').value = c.wv; get('wv').style.display = c.wl ? 'inline' : 'none'; if (c.dark) document.body.classList.add('dark'); else document.body.classList.remove('dark'); sc = c.sc || 1; tfs = c.tfs || 1.1; lib = c.lib || []; rlb(); tp(c.pt); ui('') };
-        const rlb = () => { const s = get('cms'), l = get('ll'); s.innerHTML = ''; l.innerHTML = ''; lib.forEach((m, i) => { s.innerHTML += `<option value="${i}">${m.t}</option>`; l.innerHTML += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid var(--bd)"><span style="font-size:0.85rem">${m.t}</span><div style="display:flex;gap:4px"><button class="bs" onclick="edl(${i})">Edit</button><button class="bs" onclick="rml(${i})" style="color:#ef4444">X</button></div></div>` }) };
-        const al = () => { const t = get('ct').value, x = get('cx').value; if (!x.trim()) return; if (editIdx > -1) { lib[editIdx] = { t: t || (x.slice(0, 12) + '...'), x: x.trim() }; editIdx = -1; get('lib-save-btn').textContent = "Add to Library" } else { lib.push({ t: t || (x.slice(0, 12) + '...'), x: x.trim() }) } get('ct').value = ''; get('cx').value = ''; rlb(); svC() };
+        const remGailMap = {'q': 'ु','w': 'ू','e': 'म','r': 'त','t': 'ज','y': 'ल','u': 'न','i': 'प','o': 'व','p': 'च','[': 'ख्',']': ',','a': 'ं','s': 'े','d': 'क','f': 'ि','g': 'ह','h': 'ी','j': 'र','k': 'ा','l': 'स',';': 'य','\'': 'श्','z': '्र','x': 'ग','c': 'ब','v': 'अ','b': 'इ','n': 'द','m': 'उ',',': 'ए','.': 'ण्','/': 'ध्','Q': 'फ','W': 'ॅ','E': 'म्','R': 'त्','T': 'ज्','Y': 'ल्','U': 'न्','I': 'प्','O': 'व्','P': 'च्','{': 'क्ष्','}': 'द्व','A': 'ा','S': 'ै','D': 'क्','F': 'थ्','G': 'ळ','H': 'भ्','J': 'श्र','K': 'ज्ञ','L': 'स्',':': 'रू','"': 'ष्','Z': 'र्','X': 'ग्','C': 'ब्','V': 'ट','B': 'ठ','N': 'छ','M': 'ड','<': 'ढ','>': 'झ','?': 'घ्','1': '१','2': '२','3': '३','4': '४','5': '५','6': '६','7': '७','8': '८','9': '९','0': '०','-': ';','_': '.','=': 'ृ','!': '।','@': '/','#': ':','$': '*','%': '-','^': '‘','&': '\'','*': 'द्ध','(': 'त्र',')': 'ऋ','+': '्','`': '़','~': 'द्य','\\': '(','|': ')'};
+        const remCBIMap = {'q': 'ु','w': 'ू','e': 'म','r': 'त','t': 'ज','y': 'ल','u': 'न','i': 'प','o': 'व','p': 'च','[': 'ख्',']': ',','a': 'ं','s': 'े','d': 'क','f': 'ि','g': 'ह','h': 'ी','j': 'र','k': 'ा','l': 'स',';': 'य','\'': 'श्','z': '्र','x': 'ग','c': 'ब','v': 'अ','b': 'इ','n': 'द','m': 'उ','Q': 'फ','W': 'ॅ','E': 'म्','R': 'त्','T': 'ज्','Y': 'ल्','U': 'न्','I': 'प्','O': 'व्','P': 'च्','A': 'ा','S': 'ै','D': 'क्','F': 'थ्','G': 'ळ','H': 'भ्','J': 'श्र','K': 'ज्ञ','L': 'स्','Z': 'र्','X': 'ग्','C': 'ब्','V': 'ट','B': 'ठ','N': 'छ','M': 'ड','-': ';','=': 'ृ','`': '़','~': 'द्य','!': '।','@': '//','#': ':','$': '*','%': '-','^': '\'','&': '\'','*': 'द्ध','(': 'त्र',')': 'ऋ','+': '्','{': 'क्ष्','}': 'द्व','<': 'ढ','>': 'झ','?': 'घ्','\\': '(','|': ')','.': 'ण्','/': 'ध्',',': 'ए','_': '.',':': 'रू','"': 'ष्'};
+        const inscriptMap = {'q': 'ौ','w': 'ै','e': 'ा','r': 'ी','t': 'ू','y': 'ब','u': 'ह','i': 'ग','o': 'द','p': 'ज','[': 'ड',']': '़','a': 'ो','s': 'े','d': '्','f': 'ि','g': 'ु','h': 'प','j': 'र','k': 'क','l': 'त',';': 'च','\'': 'ट','z': 'ॆ','x': 'ं','c': 'म','v': 'न','b': 'व','n': 'ल','m': 'स',',': ',','.': '.','/': 'य','Q': 'औ','W': 'ऐ','E': 'आ','R': 'ई','T': 'ऊ','Y': 'भ','U': 'ङ','I': 'घ','O': 'ध','P': 'झ','{': 'ढ','}': 'ञ','A': 'ओ','S': 'ए','D': 'अ','F': 'इ','G': 'उ','H': 'फ','J': 'ऱ','K': 'ख','L': 'थ',':': 'छ','"': 'ठ','Z': 'ऎ','X': 'ँ','C': 'ण','V': 'ऩ','B': 'ऴ','N': 'ळ','M': 'श','<': 'ष','>': '।','?': 'य़','1': '१','2': '२','3': '३','4': '४','5': '५','6': '६','7': '७','8': '८','9': '९','0': '०','!': 'ऍ','@': 'ॅ','#': '्र','$': 'र्','%': 'ज्ञ','^': 'त्र','&': 'क्ष','*': 'श्र','-': '-','+': 'ऋ','_': 'ः','=': 'ृ','~': 'ऒ','`': 'ॊ','|': 'ऑ','\\': 'ॉ'};
+        const indicMap = {'a': 'अ','A': 'ा','b': 'ब','B': 'भ','c': 'च','C': 'छ','d': 'द','D': 'ध','e': 'े','E': 'ै','f': 'फ','F': 'फ़','g': 'ग','G': 'घ','h': 'ह','H': 'ः','i': 'ि','I': 'ी','j': 'ज','J': 'झ','k': 'क','K': 'ख','l': 'ल','L': 'ळ','m': 'म','M': 'ं','n': 'न','N': 'ण','o': 'ो','O': 'ौ','p': 'प','P': 'फ','r': 'र','R': 'ृ','s': 'स','S': 'श','t': 'त','T': 'थ','u': 'ु','U': 'ू','v': 'व','x': 'क्ष','X': 'ज्ञ','y': 'य','.': '।','_': ''};
+        const IM = {'g': remGailMap,'c': remCBIMap,'i': inscriptMap,'p': indicMap};
+        const VM = {'अ': '','आ': 'ा','इ': 'ि','ई': 'ी','उ': 'ु','ऊ': 'ू','ए': 'े','ऐ': 'ै','ओ': 'ो','औ': 'ौ','ऋ': 'ृ','ऍ': 'ॅ'};
+        const RM = {'1': '1','2': '2','3': '3','4': '4','5': '5','6': '6','7': '7','8': '8','9': '9','0': '0'};
+        const LM = {'1': '१','2': '२','3': '३','4': '४','5': '५','6': '६','7': '७','8': '८','9': '९','0': '०'};
+        
+        let cm = "", stT, tmr, plist = {}, sc = 1, tfs = 1.1, bsc = 0, pn = "", lib = [], imeS = {wI: false, dK: false, pK: '', nI: false, altBypass: false}, editIdx = -1;
+        const src = [
+            {t: "Registry", u: "https://gist.githubusercontent.com/vs-parihar/80a61d62dd93b9e496a8db28ad9eee5c/raw/registry.json", m: 0},
+            {t: "English", u: "https://api.github.com/gists/f5bf18c404ac6c4649b207a2cb83aefd", m: 1},
+            {t: "Hindi", u: "https://api.github.com/gists/8e9911bc62761d6fb5407d8b76d67c97", m: 1},
+            {t: "Local", u: "assets/matters", m: 2}
+        ];
+
+        const get = (id) => document.getElementById(id);
+        const sm = (id) => {
+            document.querySelectorAll('.m').forEach(m => m.classList.remove('active'));
+            get(id).classList.add('active');
+        };
+
+        const ui = (t) => {
+            if (t === 'd') document.body.classList.toggle('dark');
+            if (t === 't+') tfs += 0.05;
+            if (t === 't-') tfs -= 0.05;
+            if (t === 's+') sc += 0.05;
+            if (t === 's-') sc -= 0.05;
+            document.documentElement.style.setProperty('--tfs', tfs + 'rem');
+            document.body.style.setProperty('--sc', sc);
+            svC();
+        };
+
+        document.querySelectorAll('.cb').forEach(c => {
+            const f = `<button onclick="ui('t+')">A+</button><button onclick="ui('t-')">A-</button>`;
+            c.innerHTML = `<button onclick="ui('d')">🌓</button>${c.dataset.type !== 'n' ? f : ''}<button onclick="ui('s+')">Z+</button><button onclick="ui('s-')">Z-</button>`
+        });
+
+        const svC = () => localStorage.setItem('tp_v42', JSON.stringify({
+            un: get('un').value,
+            tl: get('tl').value,
+            ime: get('ime').value,
+            ip: get('ip').value,
+            pt: get('pt').checked,
+            bk: get('bk').checked,
+            hi: get('hi').checked,
+            as: get('as').checked,
+            wl: get('wl').checked,
+            wv: get('wv').value,
+            dark: document.body.classList.contains('dark'),
+            sc, tfs, lib,
+            ps_val: get('ps').value,
+            ms_idx: get('ms').selectedIndex,
+            cms_idx: get('cms').selectedIndex
+        }));
+
+        const ldC = () => {
+            const c = JSON.parse(localStorage.getItem('tp_v42'));
+            if (!c) { tp(false); return; }
+            get('un').value = c.un;
+            get('tl').value = c.tl;
+            get('ime').value = c.ime || 'e';
+            get('ip').value = c.ip || 5;
+            get('pt').checked = c.pt;
+            get('bk').checked = c.bk;
+            get('hi').checked = c.hi;
+            get('as').checked = c.as;
+            get('wl').checked = c.wl;
+            get('wv').value = c.wv;
+            get('wv').style.display = c.wl ? 'inline' : 'none';
+            if (c.dark) document.body.classList.add('dark'); else document.body.classList.remove('dark');
+            sc = c.sc || 1;
+            tfs = c.tfs || 1.1;
+            lib = c.lib || [];
+            rlb();
+            tp(c.pt);
+            ui('');
+        };
+
+        const rlb = () => {
+            const s = get('cms'), l = get('ll');
+            s.innerHTML = ''; l.innerHTML = '';
+            lib.forEach((m, i) => {
+                s.innerHTML += `<option value="${i}">${m.t}</option>`;
+                l.innerHTML += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid var(--bd)"><span style="font-size:0.85rem">${m.t}</span><div style="display:flex;gap:4px"><button class="bs" onclick="edl(${i})">Edit</button><button class="bs" onclick="rml(${i})" style="color:#ef4444">X</button></div></div>`
+            })
+        };
+
+        const al = () => {
+            const t = get('ct').value, x = get('cx').value;
+            if (!x.trim()) return;
+            if (editIdx > -1) { lib[editIdx] = {t: t || (x.slice(0, 12) + '...'), x: x.trim()}; editIdx = -1; get('lib-save-btn').textContent = "Add to Library" }
+            else { lib.push({t: t || (x.slice(0, 12) + '...'), x: x.trim()}) }
+            get('ct').value = ''; get('cx').value = ''; rlb(); svC();
+        };
+
         const edl = (i) => { editIdx = i; get('ct').value = lib[i].t; get('cx').value = lib[i].x; get('lib-save-btn').textContent = "Update Matter" };
         const rml = (i) => { if (confirm("Delete this matter?")) { lib.splice(i, 1); rlb(); svC() } };
         const tp = (v) => { document.querySelectorAll('.du').forEach(e => e.style.display = v ? 'none' : 'flex'); document.querySelectorAll('.cu').forEach(e => e.style.display = v ? 'flex' : 'none') };
-        const lp = (n) => { const s = get('ms'); s.innerHTML = ''; pn = n; if (plist[n]) plist[n].forEach((m, i) => s.innerHTML += `<option value="${i}">${m.title}</option>`) };
+
+        const lp = (n) => {
+            const s = get('ms'); s.innerHTML = ''; pn = n;
+            if (plist[n]) plist[n].forEach((m, i) => s.innerHTML += `<option value="${i}">${m.title}</option>`);
+            svC();
+        };
+
         const nm = (t) => t ? t.normalize('NFC').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/ाे/g, 'ो').replace(/ाै/g, 'ौ').trim() : "";
+
         async function init() {
-            ldC(); for (let s of src) {
+            ldC();
+            for (let s of src) {
                 try {
-                    if (s.m === 2) {
-                        for (let i = 1; i <= 10; i++) {
-                            const pN = `Playlist ${i}`, u = `${s.u}/${pN}/matter.txt`;
-                            try { const r = await fetch(u); if (r.ok) { if (!plist[pN]) plist[pN] = []; plist[pN].push({ title: `Matter ${i}`, matter: u }) } } catch (e) { }
+                    if(s.m===2){
+                        for(let i=1;i<=20;i++){
+                            const pN=`Playlist ${i}`,u=`${s.u}/${pN}/matter.txt`;
+                            try{
+                                const r=await fetch(u);
+                                if(r.ok){if(!plist[pN])plist[pN]=[];plist[pN].push({title:`Matter ${i}`,matter:u})}
+                            }catch(e){}
                         }
                     } else {
                         const r = await fetch(s.u), d = await r.json();
-                        if (s.m === 0) { for (let p of d) { const rI = p.id.split('/').pop(), pr = await fetch(`https://gist.githubusercontent.com/vs-parihar/${rI}/raw/playlist.json`), pl = await pr.json(); if (!plist[p.title]) plist[p.title] = []; plist[p.title].push(...pl) } }
-                        else { if (!plist[s.t]) plist[s.t] = []; Object.values(d.files).forEach(f => plist[s.t].push({ title: f.filename, matter: f.raw_url })) }
+                        if (s.m === 0) {
+                            for (let p of d) {
+                                const rI = p.id.split('/').pop(), pr = await fetch(`https://gist.githubusercontent.com/vs-parihar/${rI}/raw/playlist.json`), pl = await pr.json();
+                                if (!plist[p.title]) plist[p.title] = [];
+                                plist[p.title].push(...pl)
+                            }
+                        } else {
+                            if (!plist[s.t]) plist[s.t] = [];
+                            Object.values(d.files).forEach(f => plist[s.t].push({title: f.filename, matter: f.raw_url}))
+                        }
                     }
-                } catch (e) { }
+                } catch (e) {}
             }
-            const pS = get('ps'); Object.keys(plist).forEach(k => pS.innerHTML += `<option value="${k}">${k}</option>`);
-            const c = JSON.parse(localStorage.getItem('tp_v42')); if (c) { if (c.ps_val) pS.value = c.ps_val; lp(pS.value); if (c.ms_idx !== undefined) get('ms').selectedIndex = c.ms_idx; if (c.cms_idx !== undefined) get('cms').selectedIndex = c.cms_idx } else if (pS.options.length) { lp(pS.value) }
+            const pS = get('ps');
+            pS.innerHTML = '';
+            Object.keys(plist).forEach(k => pS.innerHTML += `<option value="${k}">${k}</option>`);
+            const c = JSON.parse(localStorage.getItem('tp_v42'));
+            if (c) {
+                if (c.ps_val) pS.value = c.ps_val;
+                lp(pS.value);
+                if (c.ms_idx !== undefined) get('ms').selectedIndex = c.ms_idx;
+                if (c.cms_idx !== undefined) get('cms').selectedIndex = c.cms_idx
+            } else if (pS.options.length) { lp(pS.value) }
         }
+
         async function st() {
-            svC(); const b = get('sb'), ot = b.textContent; let mName = ""; b.disabled = true; b.textContent = "Wait...";
-            if (get('pt').checked) { if (!lib.length) { b.textContent = ot; return (b.disabled = false) } const sel = lib[get('cms').value]; cm = sel.x; mName = sel.t; pn = "Library" }
-            else {
+            svC();
+            const b = get('sb'), ot = b.textContent;
+            let mName = ""; b.disabled = true; b.textContent = "Wait...";
+            if (get('pt').checked) {
+                if (!lib.length) { b.textContent = ot; return (b.disabled = false) }
+                const sel = lib[get('cms').value]; cm = sel.x; mName = sel.t; pn = "Library"
+            } else {
                 const m = plist[pn] ? plist[pn][get('ms').value] : null; mName = m ? m.title : "Matter";
-                try { if (m && m.matter) cm = await (await fetch(m.matter)).text(); else if (m && m.raw_url) cm = await (await fetch(m.raw_url)).text(); else if (m && m.url) { const d = await (await fetch(`https://archive.org/metadata/${m.url.split('/').pop()}`)).json(); cm = (d.metadata.description || m.title).replace(/<[^>]*>/g, '') } else cm = m ? m.title : "" } catch (e) { cm = m ? m.title : "" }
-            } setup(cm, mName); b.disabled = false; b.textContent = ot
+                try {
+                    if (m && m.matter) cm = await (await fetch(m.matter)).text();
+                    else if (m && m.raw_url) cm = await (await fetch(m.raw_url)).text();
+                    else if (m && m.url) { const d = await (await fetch(`https://archive.org/metadata/${m.url.split('/').pop()}`)).json(); cm = (d.metadata.description || m.title).replace(/<[^>]*>/g, '') }
+                    else cm = m ? m.title : ""
+                } catch (e) { cm = m ? m.title : "" }
+            }
+            setup(cm, mName); b.disabled = false; b.textContent = ot
         }
+
         function setup(txt, mName) {
-            let w = txt.split(/\s+/).filter(x => x); if (get('wl').checked) w = w.slice(0, parseInt(get('wv').value)); fT = w.join(' '); const tt = get('tt');
-            tt.scrollTop = 0; tt.classList.toggle('as-on', get('as').checked); tt.innerHTML = w.map(x => `<span>${x}</span>`).join('');
-            const iS = get('ime'), kName = iS.options[iS.selectedIndex].text, trunc = (s, l) => s.length > l ? s.slice(0, l) + '...' : s; get('typing-info').textContent = `${kName} • ${trunc(mName, 15)}`;
-            const i = get('ia'); i.value = ''; bsc = 0; sm('typ'); i.focus(); imeS = { wI: false, dK: false, pK: '', nI: false, altBypass: false }; stT = new Date(); const lim = get('tl').value * 60;
-            clearInterval(tmr); tmr = setInterval(() => { const e = Math.floor((new Date() - stT) / 1000), r = lim - e; if (r <= 0) ft(); get('lt').textContent = `${Math.floor(r / 60)}:${(r % 60).toString().padStart(2, '0')}` }, 1000);
+            let w = txt.split(/\s+/).filter(x => x);
+            if (get('wl').checked) w = w.slice(0, parseInt(get('wv').value));
+            const fT = w.join(' ');
+            const tt = get('tt'); tt.scrollTop = 0; tt.classList.toggle('as-on', get('as').checked);
+            tt.innerHTML = w.map(x => `<span>${x}</span>`).join('');
+            const iS = get('ime'), mod = iS.value, kName = iS.options[iS.selectedIndex].text, trunc = (s, l) => s.length > l ? s.slice(0, l) + '...' : s;
+            get('typing-info').textContent = `${kName} • ${trunc(mName, 15)}`;
+            const i = get('ia'); i.value = ''; bsc = 0; sm('typ'); i.focus();
+            imeS = {wI: false, dK: false, pK: '', nI: false, altBypass: false};
+            stT = new Date();
+            const lim = get('tl').value * 60;
+            clearInterval(tmr);
+            tmr = setInterval(() => {
+                const e = Math.floor((new Date() - stT) / 1000), r = lim - e;
+                if (r <= 0) ft();
+                get('lt').textContent = `${Math.floor(r / 60)}:${(r % 60).toString().padStart(2, '0')}`
+            }, 1000);
+
             i.onkeydown = (e) => {
-                const mod = get('ime').value; imeS.altBypass = e.altKey; if (e.altKey) return;
+                imeS.altBypass = e.altKey;
+                if (e.altKey) return;
+                
                 if (mod !== 'e' && ((e.code.startsWith('Numpad') && /[0-9]/.test(e.key)) || (/[0-9]/.test(e.key) && !e.ctrlKey))) {
-                    imeS.nI = true; const c = get('ia'), s = c.selectionStart, v = c.value, k = e.key, cl = e.getModifierState('CapsLock');
-                    const num = cl ? RM[k] : LM[k]; e.preventDefault(); c.value = v.slice(0, s) + num + v.slice(c.selectionEnd); c.setSelectionRange(s + num.length, s + num.length); c.dispatchEvent(new Event('input')); return
+                    imeS.nI = true;
+                    const c = get('ia'), s = c.selectionStart, v = c.value, k = e.key, cl = e.getModifierState('CapsLock');
+                    const num = cl ? RM[k] : LM[k];
+                    e.preventDefault();
+                    c.value = v.slice(0, s) + num + v.slice(c.selectionEnd);
+                    c.setSelectionRange(s + num.length, s + num.length);
+                    c.dispatchEvent(new Event('input')); return
                 } else { imeS.nI = false }
-                if (mod === 'i' && e.ctrlKey && e.shiftKey) { if (e.key === '!') { e.preventDefault(); insC('\u200D') } if (e.key === '@') { e.preventDefault(); insC('\u200C') } }
+
                 if (e.key === 'Backspace') {
-                    imeS.wI = false; imeS.pK = ''; const v = i.value, s = i.selectionStart;
-                    if (mod === 'g' || mod === 'c') { if (v.slice(s - 2, s) === '\u25cc\u093f') { e.preventDefault(); i.value = v.slice(0, s - 2) + v.slice(s); i.setSelectionRange(s - 2, s - 2); i.dispatchEvent(new Event('input')); return } if (v.charAt(s - 1) === '\u093f') { e.preventDefault(); i.value = v.slice(0, s - 2) + v.slice(s); i.setSelectionRange(s - 2, s - 2); i.dispatchEvent(new Event('input')); return } }
+                    imeS.wI = false; imeS.pK = '';
+                    const v = i.value, s = i.selectionStart;
+                    if (mod === 'g' || mod === 'c') {
+                        if (v.slice(s - 2, s) === '\u25cc\u093f') {
+                            e.preventDefault(); i.value = v.slice(0, s - 2) + v.slice(s);
+                            i.setSelectionRange(s - 2, s - 2); i.dispatchEvent(new Event('input')); return
+                        }
+                    }
                     bsc++; if (!get('bk').checked) e.preventDefault()
                 }
             };
-            const insC = (c) => { const st = i.selectionStart, v = i.value; i.value = v.slice(0, st) + c + v.slice(i.selectionEnd); i.setSelectionRange(st + c.length, st + c.length); i.dispatchEvent(new Event('input')) };
+
             i.onbeforeinput = (v) => {
                 if (imeS.altBypass || v.inputType === 'insertCompositionText') return;
                 if (imeS.nI) { v.preventDefault(); return }
-                const mod = get('ime').value; if (mod === 'e' || v.inputType.includes('delete')) return;
+                if (mod === 'e' || v.inputType.includes('delete')) return;
                 if (!v.data || v.data === ' ') { imeS.dK = false; imeS.wI = false; imeS.pK = ''; return }
-                if (v.data.length > 1) return; v.preventDefault();
-                let k = v.data, m = IM[mod][k] || k, char = m, st = i.selectionStart, en = i.selectionEnd, val = i.value;
-                if (mod !== 'e') { let prv = val.slice(0, st); if (prv.endsWith('्')) { if (VM[char] !== undefined) { val = prv.slice(0, -1); st-- } else if (char === 'ा') { val = prv.slice(0, -1); st--; char = '' } } }
+                if (v.data.length > 1) return;
+                
+                v.preventDefault();
+                let k = v.data, map = IM[mod], m = map[k] || k, char = m, st = i.selectionStart, en = i.selectionEnd, val = i.value;
+                
+                if (mod !== 'e') {
+                    let prv = val.slice(0, st);
+                    if (prv.endsWith('्')) {
+                        if (VM[char] !== undefined) { val = prv.slice(0, -1); st-- }
+                        else if (char === 'ा') { val = prv.slice(0, -1); st--; char = '' }
+                    }
+                }
+                
                 if (mod === 'g' || mod === 'c') {
-                    let p = val[st - 1]; if (k === 'f') { char = '\u25cc\u093f'; imeS.wI = true } else if (imeS.wI) { if (val.slice(st - 2, st) === '\u25cc\u093f') { val = val.slice(0, st - 2); st -= 2; char = char + '\u093f'; imeS.wI = false } }
-                    if (k === 'k') { if (p === 'अ') char = (val = val.slice(0, -1), st--, 'आ'); else if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ओ'); else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ो') }
-                    if (k === 's') { if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ओ'); else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ो'); else if (p === 'ए') char = (val = val.slice(0, -1), st--, 'ऐ') }
-                    if (k === 'S') { if (p === 'आ') char = (val = val.slice(0, -1), st--, 'औ'); else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ौ') }
-                    if (k === 'W') { if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ऑ'); else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ॉ'); else if (p === 'ए') char = (val = val.slice(0, -1), st--, 'ऍ') }
-                    if (k === 'a' && p === 'ॉ') char = (val = val.slice(0, -1), st--, 'ँ');
-                    if (k === 'Q') { if (p === 'उ') char = (val = val.slice(0, -1), st--, 'ऊ'); else if (p === 'प') char = (val = val.slice(0, -1), st--, 'फ'); else if (p === 'र') char = (val = val.slice(0, -1), st--, 'रु') }
-                } if (mod === 'p') { let prev = val[st - 1]; if (prev && VM[char] !== undefined && !/\s/.test(prev)) char = VM[char] }
-                i.value = val.slice(0, st) + char + val.slice(en); i.setSelectionRange(st + char.length, st + char.length); imeS.pK = k; i.dispatchEvent(new Event('input'))
+                    let p = val[st - 1];
+                    if (k === 'f') { char = '\u25cc\u093f'; imeS.wI = true }
+                    else if (imeS.wI) { if (val.slice(st - 2, st) === '\u25cc\u093f') { val = val.slice(0, st - 2); st -= 2; char = char + '\u093f'; imeS.wI = false } }
+                    if (k === 'k') {
+                        if (p === 'अ') char = (val = val.slice(0, -1), st--, 'आ');
+                        else if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ओ');
+                        else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ो')
+                    }
+                }
+                i.value = val.slice(0, st) + char + val.slice(en);
+                i.setSelectionRange(st + char.length, st + char.length);
+                imeS.pK = k; i.dispatchEvent(new Event('input'))
             };
+
             i.oninput = () => {
-                const v = i.value, vW = v.split(/\s+/).filter(x => x), tW = fT.split(/\s+/), idxCur = vW.length ? vW.length - (v.endsWith(' ') ? 0 : 1) : 0; let cw = 0;
+                const v = i.value, vParts = v.split(/\s+/), vW = vParts.filter(x => x), tW = fT.split(/\s+/);
+                const isWordEnd = v.endsWith(' ');
+                const idxCur = vW.length > 0 ? (isWordEnd ? vW.length : vW.length - 1) : 0;
+                
+                let cw = 0, wordsEvaluated = 0;
+                i.scrollTop = i.scrollHeight;
+
                 get('tt').querySelectorAll('span').forEach((s, idx) => {
-                    s.className = ''; s.style.background = ''; const u = v.split(/\s+/)[idx] || "";
-                    if (idx < v.split(/\s+/).length - 1) { const isC = nm(u) === nm(tW[idx] || ""); if (isC) cw++; if (get('hi').checked) s.classList.add(isC ? 'cor' : 'inc') }
-                    if (idx === idxCur) { if (get('hi').checked) s.style.background = 'rgba(79,70,229,0.3)'; if (get('as').checked) s.scrollIntoView({ block: 'center', behavior: 'smooth' }) }
-                }); const m = Math.max((new Date() - stT) / 60000, 0.01), gw = (v.length / 5) / m; get('ls').textContent = `${Math.round(gw)} | ${Math.round(Math.max(0, gw - ((vW.length - cw) / m)))}`; get('la').textContent = `${Math.round(vW.length ? cw / vW.length * 100 : 0)}% | ${vW.length}`
+                    s.className = '';
+                    const typedWord = vParts[idx] || "";
+                    
+                    if (idx < idxCur) {
+                        const isC = nm(typedWord) === nm(tW[idx] || "");
+                        if (isC) cw++;
+                        wordsEvaluated++;
+                        if (get('hi').checked) s.classList.add(isC ? 'cor' : 'inc');
+                    } 
+                    else if (idx === idxCur && !isWordEnd) {
+                        s.classList.add('active-word');
+                        // ONLY apply real-time error red highlight if the keyboard is English
+                        if (get('hi').checked && typedWord.length > 0 && mod === 'e') {
+                            const isStillCorrect = nm(tW[idx] || "").startsWith(nm(typedWord));
+                            if (!isStillCorrect) s.classList.add('inc');
+                        }
+                        if (get('as').checked) s.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                    }
+                    else if (idx === idxCur && isWordEnd) {
+                         s.classList.add('active-word');
+                         if (get('as').checked) s.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                    }
+                });
+
+                const m = Math.max((new Date() - stT) / 60000, 0.01), gw = (v.length / 5) / m;
+                const netWpm = Math.max(0, gw - ((wordsEvaluated - cw) / m));
+                get('ls').textContent = `${Math.round(gw)} | ${Math.round(netWpm)}`;
+                get('la').textContent = `${Math.round(wordsEvaluated ? cw / wordsEvaluated * 100 : 0)}% | ${vW.length}`;
             }
         }
+
         function ft() {
-            clearInterval(tmr); const v = get('ia').value.trim(), tW = cm.trim().split(/\s+/).filter(x => x), vW = v.split(/\s+/).filter(x => x), dur = Math.max((new Date() - stT) / 60000, 0.1), iP = parseFloat(get('ip').value) || 0;
-            let cw = 0, err = 0, dv = ""; tW.forEach((w, i) => { const u = vW[i] || ""; if (i < vW.length) { if (nm(u) !== nm(w)) { err++; dv += `<span class="inc">${w} </span>` } else { cw++; dv += `<span class="cor">${w} </span>` } } });
+            clearInterval(tmr);
+            const v = get('ia').value.trim(), tW = cm.trim().split(/\s+/).filter(x => x), vW = v.split(/\s+/).filter(x => x), dur = Math.max((new Date() - stT) / 60000, 0.1), iP = parseFloat(get('ip').value) || 0;
+            let cw = 0, err = 0, dv = "";
+            tW.forEach((w, i) => {
+                const u = vW[i] || "";
+                if (i < vW.length) {
+                    if (nm(u) !== nm(w)) { err++; dv += `<span class="inc">${w} </span>` }
+                    else { cw++; dv += `<span class="cor">${w} </span>` }
+                }
+            });
             const gW = (v.length / 5) / dur, gK = v.length * (60 / dur), ac = vW.length ? (cw / vW.length) * 100 : 0, m1N = Math.max(0, gW - (err / dur)), p2 = err * 10, m2N = Math.max(0, gW - (p2 / dur)), ign = Math.floor(tW.length * iP / 100), ne3 = Math.max(0, err - ign), p3 = ne3 * 10, m3N = Math.max(0, gW - (p3 / dur));
             const gKDPH = Math.round(gK), nKDPH = Math.round(m1N * 5 * (60 / dur));
             let h = `<div class="sg"><div class="mh">1. Method 1: ${pn} [net speed formula M2]</div><div class="ms">${m1N.toFixed(2)} WPM | ${nKDPH} KDPH</div><div class="rl"><span>Net Speed</span><span>${m1N.toFixed(2)} WPM</span></div><div class="rl"><span>Gross Speed</span><span>${gW.toFixed(2)} WPM | ${gKDPH} KDPH</span></div><div class="rl"><span>Accuracy</span><span>${ac.toFixed(2)} %</span></div><div class="rl"><span>Total Entries</span><span>${vW.length}</span></div><div class="rl"><span>Total Errors</span><span>${err}</span></div><div class="rl"><span>Error Rate</span><span>${(err / dur).toFixed(2)} WPM</span></div><div class="rl"><span>Backspace Pressed</span><span>${bsc}</span></div><div class="rl"><span>Duration</span><span>${Math.ceil(dur)} Min</span></div></div>`;
@@ -497,9 +676,8 @@
             h += `<div class="sg"><div class="mh">3. ${iP}% Mistakes are ignorable</div><div class="ms">${m3N.toFixed(2)} WPM | ${Math.round(m3N * 5 * (60 / dur))} KDPH</div><div class="rl"><span>Net Speed</span><span>${m3N.toFixed(2)} WPM</span></div><div class="rl"><span>Gross Speed</span><span>${gW.toFixed(2)} WPM | ${gKDPH} KDPH</span></div><div class="rl"><span>Accuracy</span><span>${m3N > 0 ? ac.toFixed(2) : '0.00'} %</span></div><div class="rl"><span>Ignorable Mistakes</span><span>${ign}</span></div><div class="rl"><span>Net Mistakes</span><span>${ne3}</span></div><div class="rl"><span>Penalty</span><span>${p3}</span></div><div class="rl"><span>Error %</span><span>${(vW.length ? err / vW.length * 100 : 0).toFixed(2)} %</span></div></div>`;
             get('rc').innerHTML = h; get('dv').innerHTML = dv; sm('res')
         }
+
         window.onload = init;
     </script>
 </body>
-
-
 </html>

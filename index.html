@@ -5,780 +5,97 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Typing Master Pro</title>
 <style>
-:root {
---bg: #000;
---p: #fff;
---pri: #4f46e5;
---txt: #1e293b;
---sc: 1;
---tfs: 1.1rem;
---gl: rgba(79, 70, 229, 0.08);
---bd: rgba(0, 0, 0, 0.1);
---font-main: "Segoe UI", "Tahoma", "Kruti Dev 010", "Mangal", "Arial Unicode MS", sans-serif;
---active-bg: rgba(79, 70, 229, 0.1);
---fw: normal;
---fs: normal;
-}
-body.dark {
---bg: #000;
---p: #000;
---pri: #6366f1;
---txt: #f1f5f9;
---gl: rgba(255, 255, 255, 0.05);
---bd: rgba(255, 255, 255, 0.2);
---active-bg: rgba(79, 70, 229, 0.4);
-}
-body {
-font-family: var(--font-main);
-background: var(--bg);
-color: var(--txt);
-margin: 0;
-min-height: 100dvh;
-display: flex;
-justify-content: center;
-align-items: safe center;
-padding: 10px;
-box-sizing: border-box;
-overflow: hidden
-}
-.m {
-position: fixed;
-inset: 0;
-background: rgba(0, 0, 0, 0.7);
-display: none;
-justify-content: center;
-align-items: safe center;
-z-index: 100;
-backdrop-filter: blur(4px);
-padding: 10px;
-overflow: auto
-}
-.m.active { display: flex }
-.c {
-background: var(--p);
-padding: 20px;
-border-radius: 12px;
-width: 100%;
-max-width: 1000px;
-border: 1px solid var(--bd);
-box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-transform: scale(var(--sc));
-transform-origin: top center;
-margin: auto;
-position: relative
-}
-.cb {
-display: flex;
-gap: 4px;
-justify-content: flex-end;
-margin-bottom: 10px
-}
-.cb button {
-padding: 3px 6px;
-font-size: 0.65rem;
-background: var(--gl);
-color: inherit;
-border: 1px solid var(--bd);
-cursor: pointer;
-border-radius: 4px;
-transition: all 0.2s;
-white-space: nowrap;
-}
-.cb button.outline-indigo {
-border: 1px solid var(--pri);
-color: var(--pri);
-font-weight: 600;
-}
-.cb button.active-toggle {
-background: var(--pri);
-color: white;
-border-color: var(--pri);
-}
-.nav-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-gap: 10px;
-margin-bottom: 12px;
-width: 100%;
-overflow: hidden;
-}
-#typing-info {
-font-size: 0.75rem;
-opacity: 0.7;
-font-weight: bold;
-text-transform: uppercase;
-white-space: nowrap;
-overflow-x: auto;
-scrollbar-width: none;
-flex: 1;
-margin: 0 10px;
-}
-#typing-info::-webkit-scrollbar { display: none; }
-.ls {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 8px;
-margin-bottom: 12px
-}
-.sc {
-background: var(--gl);
-border: 1px solid var(--bd);
-padding: 8px;
-border-radius: 8px;
-text-align: center
-}
-.sv {
-font-weight: 800;
-font-size: 1rem;
-display: block;
-color: var(--pri)
-}
-.sl {
-font-size: 0.55rem;
-opacity: 0.8;
-text-transform: uppercase;
-font-weight: bold
-}
-.g {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-gap: 12px;
-font-size: 0.8rem
-}
-.f-col {
-display: flex;
-flex-direction: column;
-gap: 4px
-}
-.cg {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin: 12px 0;
-padding: 10px;
-background: var(--gl);
-border-radius: 10px;
-border: 1px solid var(--bd)
-}
-.chk-row {
-display: flex;
-align-items: center;
-gap: 6px;
-cursor: pointer;
-user-select: none;
-font-size: 0.8rem
-}
-select, textarea, input:not([type="checkbox"]) {
-width: 100%;
-padding: 8px;
-border: 1px solid var(--bd);
-border-radius: 6px;
-background: var(--p);
-color: inherit;
-outline: none;
-font-size: 0.85rem;
-box-sizing: border-box;
-font-family: var(--font-main)
-}
-.ta, #ia, #dv {
-font-size: var(--tfs);
-line-height: 1.6;
-border: 1px solid var(--bd);
-padding: 12px;
-margin: 8px 0;
-background: var(--gl);
-border-radius: 10px;
-scrollbar-width: thin;
-font-family: var(--font-main);
-font-weight: var(--fw);
-font-style: var(--fs);
-}
-.ta {
-height: 25vh;
-overflow-y: auto;
-white-space: normal;
-word-wrap: break-word;
-overflow-wrap: break-word;
-}
-.ta span {
-display: inline-block;
-margin-right: 0.4ch;
-padding: 0 2px;
-border-radius: 3px;
-}
-.as-on { overflow-y: hidden !important }
-#ia {
-height: 12vh;
-resize: none;
-white-space: pre-wrap;
-overflow-y: auto;
-line-height: 1.6;
-}
-#dv {
-height: 12vh;
-overflow-y: auto;
-white-space: pre-wrap
-}
-.cor { color: #039660 }
-.inc { color: #ef4444; text-decoration: underline; font-weight: bold }
-.active-word { background: var(--active-bg); border-radius: 3px; }
-#rc {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 12px;
-margin-bottom: 12px;
-max-height: 45vh;
-overflow-y: auto;
-padding-right: 5px;
-scrollbar-width: thin
-}
-.sg {
-padding: 10px;
-background: var(--gl);
-border-radius: 10px;
-border: 1px solid var(--bd);
-display: flex;
-flex-direction: column;
-gap: 1px
-}
-.rl {
-display: flex;
-justify-content: space-between;
-padding: 2px 0;
-font-size: 0.75rem;
-border-bottom: 1px solid var(--bd)
-}
-.mh {
-font-weight: 700;
-color: var(--pri);
-font-size: 0.8rem;
-margin-bottom: 4px;
-line-height: 1.2
-}
-.ms {
-font-size: 1.1rem;
-font-weight: 900;
-margin: 4px 0;
-color: var(--txt)
-}
-.bp {
-background: var(--pri);
-color: #fff;
-border: none;
-padding: 12px;
-border-radius: 8px;
-cursor: pointer;
-width: 100%;
-font-weight: 700;
-margin-top: 8px
-}
-.bs {
-background: var(--p);
-color: inherit;
-border: 1px solid var(--bd);
-padding: 4px 8px;
-border-radius: 6px;
-cursor: pointer;
-font-size: 0.7rem
-}
-.back-btn {
-background: none;
-border: none;
-color: inherit;
-cursor: pointer;
-font-size: 1.4rem;
-padding: 0 8px;
-display: flex;
-align-items: center;
-flex-shrink: 0;
-}
-#confirm { z-index: 200 }
-#instr-modal { z-index: 300 }
-.instr-table {
-width: 100%;
-border-collapse: collapse;
-font-size: 0.75rem;
-margin-top: 10px;
-}
-.instr-table th, .instr-table td {
-border: 1px solid var(--bd);
-padding: 6px;
-text-align: left;
-}
-.instr-table th { background: var(--gl); }
-.alt-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-gap: 5px;
-font-size: 0.7rem;
-margin-top: 15px;
-}
-.alt-item {
-padding: 4px;
-background: var(--gl);
-border-radius: 4px;
-border: 1px solid var(--bd);
-}
+:root{--bg:#000;--p:#fff;--pri:#4f46e5;--txt:#1e293b;--sc:1;--tfs:1.1rem;--gl:rgba(79,79,229,0.08);--bd:rgba(0,0,0,0.1);--font-main:"Segoe UI","Tahoma","Kruti Dev 010","Mangal","Arial Unicode MS",sans-serif;--active-bg:rgba(79,46,229,0.1);--fw:normal;--fs:normal}
+body.dark{--bg:#000;--p:#000;--pri:#6366f1;--txt:#f1f5f9;--gl:rgba(255,255,255,0.05);--bd:rgba(255,255,255,0.2);--active-bg:rgba(79,70,229,0.4)}
+body{font-family:var(--font-main);background:var(--bg);color:var(--txt);margin:0;min-height:100dvh;display:flex;justify-content:center;align-items:safe center;padding:10px;box-sizing:border-box;overflow:hidden}
+.m{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;justify-content:center;align-items:safe center;z-index:100;backdrop-filter:blur(4px);padding:10px;overflow:auto}
+.m.active{display:flex}
+.c{background:var(--p);padding:20px;border-radius:12px;width:100%;max-width:1000px;border:1px solid var(--bd);box-shadow:0 20px 40px rgba(0,0,0,0.4);transform:scale(var(--sc));transform-origin:top center;margin:auto;position:relative}
+.cb{display:flex;gap:4px;justify-content:flex-end;margin-bottom:10px}
+.cb button{padding:3px 6px;font-size:0.65rem;background:var(--gl);color:inherit;border:1px solid var(--bd);cursor:pointer;border-radius:4px;transition:all 0.2s;white-space:nowrap}
+.cb button.outline-indigo{border:1px solid var(--pri);color:var(--pri);font-weight:600}
+.cb button.active-toggle{background:var(--pri);color:white;border-color:var(--pri)}
+.nav-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;width:100%;overflow:hidden}
+#typing-info{font-size:0.75rem;opacity:0.7;font-weight:bold;text-transform:uppercase;white-space:nowrap;overflow-x:auto;scrollbar-width:none;flex:1;margin:0 10px}
+#typing-info::-webkit-scrollbar{display:none}
+.ls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.sc{background:var(--gl);border:1px solid var(--bd);padding:8px;border-radius:8px;text-align:center}
+.sv{font-weight:800;font-size:1rem;display:block;color:var(--pri)}
+.sl{font-size:0.55rem;opacity:0.8;text-transform:uppercase;font-weight:bold}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;font-size:0.8rem}
+.f-col{display:flex;flex-direction:column;gap:4px}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;padding:10px;background:var(--gl);border-radius:10px;border:1px solid var(--bd)}
+.chk-row{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:0.8rem}
+select,textarea,input:not([type="checkbox"]){width:100%;padding:8px;border:1px solid var(--bd);border-radius:6px;background:var(--p);color:inherit;outline:none;font-size:0.85rem;box-sizing:border-box;font-family:var(--font-main)}
+.ta,#ia,#dv{font-size:var(--tfs);line-height:1.6;border:1px solid var(--bd);padding:12px;margin:8px 0;background:var(--gl);border-radius:10px;scrollbar-width:thin;font-family:var(--font-main);font-weight:var(--fw);font-style:var(--fs)}
+.ta{height:25vh;overflow-y:auto;white-space:normal;word-wrap:break-word;overflow-wrap:break-word}
+.ta span{display:inline-block;margin-right:0.4ch;padding:0 2px;border-radius:3px}
+.as-on{overflow-y:hidden!important}
+#ia{height:12vh;resize:none;white-space:pre-wrap;overflow-y:auto;line-height:1.6}
+#dv{height:12vh;overflow-y:auto;white-space:pre-wrap}
+.cor{color:#039660}
+.inc{color:#ef4444;text-decoration:underline;font-weight:bold}
+.full-err{color:#ef4444;font-weight:bold;text-decoration:underline}
+.half-err{color:#3b82f6;font-weight:bold}
+.om-err{background:#fee2e2;color:#ef4444;border-radius:2px}
+.active-word{background:var(--active-bg);border-radius:3px}
+#rc{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:12px;max-height:45vh;overflow-y:auto;padding-right:5px;scrollbar-width:thin}
+.sg{padding:10px;background:var(--gl);border-radius:10px;border:1px solid var(--bd);display:flex;flex-direction:column;gap:1px}
+.rl{display:flex;justify-content:space-between;padding:2px 0;font-size:0.75rem;border-bottom:1px solid var(--bd)}
+.mh{font-weight:700;color:var(--pri);font-size:0.8rem;margin-bottom:4px;line-height:1.2}
+.ms{font-size:1.1rem;font-weight:900;margin:4px 0;color:var(--txt)}
+.bp{background:var(--pri);color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;width:100%;font-weight:700;margin-top:8px}
+.bs{background:var(--p);color:inherit;border:1px solid var(--bd);padding:4px 8px;border-radius:6px;cursor:pointer;font-size:0.7rem}
+.back-btn{background:none;border:none;color:inherit;cursor:pointer;font-size:1.4rem;padding:0 8px;display:flex;align-items:center;flex-shrink:0}
+#confirm{z-index:200}#instr-modal{z-index:300}
+.instr-table{width:100%;border-collapse:collapse;font-size:0.75rem;margin-top:10px}
+.instr-table th,.instr-table td{border:1px solid var(--bd);padding:6px;text-align:left}
+.instr-table th{background:var(--gl)}
+.alt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:5px;font-size:0.7rem;margin-top:15px}
+.alt-item{padding:4px;background:var(--gl);border-radius:4px;border:1px solid var(--bd)}
 </style>
 </head>
 <body class="dark">
-<div id="instr-modal" class="m">
-<div class="c" style="max-width:800px; max-height: 90vh; overflow-y: auto;">
-<div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-<h3 style="margin:0; color:var(--pri)">Hindi Unicode Typing Instruction</h3>
-<button class="bs" onclick="get('instr-modal').classList.remove('active')">Close</button>
-</div>
-<p style="font-size: 0.9rem; font-weight: bold; color: var(--pri); margin: 0 0 10px 0;">Note- To insert Devnagari/Hindi Digits/Numbers Turn ON CAPS LOCK.</p>
-<table class="instr-table">
-<thead>
-<tr><th>Word</th><th>Inscript Layout</th><th>Remington Layout</th></tr>
-</thead>
-<tbody>
-<tr><td>योजना</td><td>य+ ो+ ज+ न+ ा</td><td>योजना = य+ ा+ े+ ज+ न+ ा</td></tr>
-<tr><td>कौन</td><td>क+ ौ+ न</td><td>कौन = क+ ा+ ै+ न</td></tr>
-<tr><td>आँख</td><td>आ+ ँ+ ख</td><td>आँख = आ+ ॅ+ ं+ ख</td></tr>
-<tr><td>हॉल</td><td>ह+ ॉ+ ल</td><td>हॉल = ह+ ा+ ॅ+ ल</td></tr>
-<tr><td>साँप</td><td>स+ ा+ ँ+ प</td><td>साँप = स+ ा+ ॅ+ ं +प</td></tr>
-<tr><td>आम</td><td>आ+ म</td><td>आम = अ+ ा+ म</td></tr>
-<tr><td>और</td><td>औ+ र</td><td>और = अ+ ा+ ै+ र</td></tr>
-<tr><td>ऐरण</td><td>ऐ+ र+ ण</td><td>ऐरण =ए+ े+ र+ ण</td></tr>
-<tr><td>ऑटम</td><td>ऑ +ट+ म</td><td>ऑटम = अ+ ा+ ॅ+ ट+ म</td></tr>
-<tr><td>ऊन</td><td>ऊ+ न</td><td>ऊन = उ+ [Shift+ Q]+ न</td></tr>
-<tr><td>ईरान</td><td>ई+ र+ ा+ न</td><td>ईरान = इ+ [Shift+ Z]+ र+ ा+ न</td></tr>
-</tbody>
-</table>
-<h4 style="margin: 20px 0 10px 0; border-bottom: 1px solid var(--pri); padding-bottom: 5px;">Shortcut Alt Key Code</h4>
-<div class="alt-grid" id="alt-codes-container"></div>
-</div>
-</div>
-<div id="cfg" class="m active">
-<div class="c" style="max-width:700px">
-<div class="cb" data-type="h"></div>
-<h2 style="margin:0 0 12px 0;color:var(--pri);font-size:1.4rem">Typing Master Pro</h2>
-<div class="g">
-<div class="f-col"><span>Name</span><input id="un" value="Guest"></div>
-<div class="f-col"><span>Time</span><select id="tl">
-<option value="1">1 Min</option>
-<option value="5">5 Min</option>
-<option value="10" selected>10 Min</option>
-<option value="15">15 Min</option>
-<option value="20">20 Min</option>
-<option value="25">25 Min</option>
-<option value="30">30 Min</option>
-</select></div>
-<div class="f-col"><span>Keyboard</span><select id="ime">
-<option value="e">English</option>
-<option value="i">Inscript</option>
-<option value="p">Indic</option>
-<option value="g" selected>Gail</option>
-<option value="c">CBI</option>
-</select></div>
-<div class="f-col"><span>Ignore Err %</span><input type="number" id="ip" value="5"></div>
-<div class="f-col"><span>Mode</span><label class="chk-row" style="height:36px"><input type="checkbox" id="pt" onchange="tp(this.checked)"> Custom Matter</label></div>
-<div class="f-col du"><span>Playlist</span><select id="ps" onchange="lp(this.value)"></select></div>
-<div class="f-col du"><span>Matter</span><select id="ms"></select></div>
-<div class="f-col cu" style="display:none"><span>Library</span>
-<div style="display:flex;gap:6px"><select id="cms"></select><button class="bs" onclick="sm('lib')">Library</button></div>
-</div>
-</div>
-<div class="cg"><label class="chk-row"><input type="checkbox" id="wl" onchange="get('wv').style.display=this.checked?'inline':'none'"> Words Limit</label><input type="number" id="wv" value="50" style="width:65px;display:none;padding:4px"><label class="chk-row"><input type="checkbox" id="bk" checked> Backspace</label><label class="chk-row"><input type="checkbox" id="hi" checked> Highlight</label><label class="chk-row"><input type="checkbox" id="as" checked> Auto Scroll</label></div><button class="bp" id="sb" onclick="st()">Start Practice</button>
-</div>
-</div>
-<div id="lib" class="m">
-<div class="c" style="max-width:550px">
-<h3>Custom Library</h3>
-<div id="ll" style="max-height:220px;overflow-y:auto;margin-bottom:10px;border:1px solid var(--bd);border-radius:6px"></div><input id="ct" placeholder="Title" style="margin-bottom:6px"><textarea id="cx" rows="5" placeholder="Paste matter..."></textarea>
-<div style="display:flex;gap:8px;margin-top:8px"><button id="lib-save-btn" class="bp" onclick="al()" style="margin-top:0">Add to Library</button><button class="bp" onclick="sm('cfg')" style="background:#475569;margin-top:0">Back</button></div>
-</div>
-</div>
-<div id="confirm" class="m">
-<div class="c" style="max-width:320px;text-align:center">
-<h3 style="margin-top:0">Discard Progress?</h3>
-<p>Current session data will be lost.</p>
-<div style="display:flex;gap:10px"><button class="bp" onclick="sm('cfg')" style="background:#ef4444">Yes, Discard</button><button class="bp" onclick="get('confirm').classList.remove('active')" style="background:#475569">No, Continue</button></div>
-</div>
-</div>
-<div id="typ" class="m">
-<div class="c">
-<div class="nav-row"><button class="back-btn" onclick="get('confirm').classList.add('active')">←</button>
-<div id="typing-info"></div>
-<div class="cb" data-type="f"></div>
-</div>
-<div class="ls">
-<div class="sc"><span class="sv" id="lt">00:00</span><span class="sl">Time Left</span></div>
-<div class="sc"><span class="sv" id="ls" title="Gross | Net WPM">0 | 0</span><span class="sl">G | N WPM</span></div>
-<div class="sc"><span class="sv" id="la">0% | 0</span><span class="sl">Acc | Words</span></div>
-</div>
-<div id="tt" class="ta"></div><textarea id="ia" spellcheck="false" placeholder="Start typing..."></textarea><button class="bp" onclick="ft()">Submit Results</button>
-</div>
-</div>
-<div id="res" class="m">
-<div class="c">
-<div class="nav-row"><button class="back-btn" onclick="st()">←</button>
-<div style="flex:1"></div>
-<div class="cb" data-type="f"></div>
-</div>
-<h3 style="margin:0 0 10px 0">Performance Analysis</h3>
-<div id="rc"></div>
-<div id="dv"></div><button class="bp" onclick="sm('cfg')">New Practice Session</button>
-</div>
-</div>
+<div id="instr-modal" class="m"><div class="c" style="max-width:800px;max-height:90vh;overflow-y:auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px"><h3 style="margin:0;color:var(--pri)">Hindi Unicode Typing Instruction</h3><button class="bs" onclick="get('instr-modal').classList.remove('active')">Close</button></div><p style="font-size:0.9rem;font-weight:bold;color:var(--pri);margin:0 0 10px 0">Note- To insert Devnagari/Hindi Digits/Numbers Turn ON CAPS LOCK.</p><table class="instr-table"><thead><tr><th>Word</th><th>Inscript Layout</th><th>Remington Layout</th></tr></thead><tbody><tr><td>योजना</td><td>य+ ो+ ज+ न+ ा</td><td>योजना = य+ ा+ े+ ज+ न+ ा</td></tr><tr><td>कौन</td><td>क+ ौ+ न</td><td>कौन = क+ ा+ ै+ न</td></tr><tr><td>आँख</td><td>आ+ ँ+ ख</td><td>आँख = आ+ ॅ+ ं+ ख</td></tr><tr><td>हॉल</td><td>ह+ ॉ+ ल</td><td>हॉल = ह+ ा+ ॅ+ ल</td></tr><tr><td>साँप</td><td>स+ ा+ ँ+ प</td><td>साँप = स+ ा+ ॅ+ ं +प</td></tr><tr><td>आम</td><td>आ+ म</td><td>आम = अ+ ा+ म</td></tr><tr><td>और</td><td>औ+ र</td><td>और = अ+ ा+ ै+ र</td></tr><tr><td>ऐरण</td><td>ऐ+ र+ ण</td><td>ऐरण =ए+ े+ र+ ण</td></tr><tr><td>ऑटम</td><td>ऑ +ट+ म</td><td>ऑटम = अ+ ा+ ॅ+ ट+ म</td></tr><tr><td>ऊन</td><td>ऊ+ न</td><td>ऊन = उ+ [Shift+ Q]+ न</td></tr><tr><td>ईरान</td><td>ई+ र+ ा+ न</td><td>ईरान = इ+ [Shift+ Z]+ र+ ा+ न</td></tr></tbody></table><h4 style="margin:20px 0 10px 0;border-bottom:1px solid var(--pri);padding-bottom:5px">Shortcut Alt Key Code</h4><div class="alt-grid" id="alt-codes-container"></div></div></div>
+<div id="cfg" class="m active"><div class="c" style="max-width:700px"><div class="cb" data-type="h"></div><h2 style="margin:0 0 12px 0;color:var(--pri);font-size:1.4rem">Typing Master Pro</h2><div class="g"><div class="f-col"><span>Name</span><input id="un" value="Guest"></div><div class="f-col"><span>Time</span><select id="tl"><option value="1">1 Min</option><option value="5">5 Min</option><option value="10" selected>10 Min</option><option value="15">15 Min</option><option value="20">20 Min</option><option value="25">25 Min</option><option value="30">30 Min</option></select></div><div class="f-col"><span>Keyboard</span><select id="ime"><option value="e">English</option><option value="i">Inscript</option><option value="p">Indic</option><option value="g" selected>Gail</option><option value="c">CBI</option></select></div><div class="f-col"><span>Ignore Err %</span><input type="number" id="ip" value="5"></div><div class="f-col"><span>Mode</span><label class="chk-row" style="height:36px"><input type="checkbox" id="pt" onchange="tp(this.checked)"> Custom Matter</label></div><div class="f-col du"><span>Playlist</span><select id="ps" onchange="lp(this.value)"></select></div><div class="f-col du"><span>Matter</span><select id="ms"></select></div><div class="f-col cu" style="display:none"><span>Library</span><div style="display:flex;gap:6px"><select id="cms"></select><button class="bs" onclick="sm('lib')">Library</button></div></div></div><div class="cg"><label class="chk-row"><input type="checkbox" id="wl" onchange="get('wv').style.display=this.checked?'inline':'none'"> Words Limit</label><input type="number" id="wv" value="50" style="width:65px;display:none;padding:4px"><label class="chk-row"><input type="checkbox" id="bk" checked> Backspace</label><label class="chk-row"><input type="checkbox" id="hi" onchange="tglHi(event)" checked> Highlight</label><label class="chk-row"><input type="checkbox" id="as" checked> Auto Scroll</label></div><button class="bp" id="sb" onclick="st()">Start Practice</button></div></div>
+<div id="lib" class="m"><div class="c" style="max-width:550px"><h3>Custom Library</h3><div id="ll" style="max-height:220px;overflow-y:auto;margin-bottom:10px;border:1px solid var(--bd);border-radius:6px"></div><input id="ct" placeholder="Title" style="margin-bottom:6px"><textarea id="cx" rows="5" placeholder="Paste matter..."></textarea><div style="display:flex;gap:8px;margin-top:8px"><button id="lib-save-btn" class="bp" onclick="al()" style="margin-top:0">Add to Library</button><button class="bp" onclick="sm('cfg')" style="background:#475569;margin-top:0">Back</button></div></div></div>
+<div id="confirm" class="m"><div class="c" style="max-width:320px;text-align:center"><h3 style="margin-top:0">Discard Progress?</h3><p>Current session data will be lost.</p><div style="display:flex;gap:10px"><button class="bp" onclick="sm('cfg')" style="background:#ef4444">Yes, Discard</button><button class="bp" onclick="get('confirm').classList.remove('active')" style="background:#475569">No, Continue</button></div></div></div>
+<div id="typ" class="m"><div class="c"><div class="nav-row"><button class="back-btn" onclick="get('confirm').classList.add('active')">←</button><div id="typing-info"></div><div class="cb" data-type="f"></div></div><div class="ls"><div class="sc"><span class="sv" id="lt">00:00</span><span class="sl">Time Left</span></div><div class="sc"><span class="sv" id="ls" title="Gross | Net WPM">0 | 0</span><span class="sl">G | N WPM</span></div><div class="sc"><span class="sv" id="la">0% | 0</span><span class="sl">Acc | Words</span></div></div><div id="tt" class="ta"></div><textarea id="ia" spellcheck="false" placeholder="Start typing..."></textarea><button class="bp" onclick="ft()">Submit Results</button></div></div>
+<div id="res" class="m"><div class="c"><div class="nav-row"><button class="back-btn" onclick="sm('cfg')">←</button><div style="flex:1"></div><div class="cb" data-type="f"></div></div><h3 style="margin:0 0 10px 0">Performance Analysis</h3><div id="rc"></div><div id="dv"></div><div style="display:flex;gap:10px;margin-top:10px"><button class="bp" onclick="sm('cfg')">New Practice Session</button><button class="bp" onclick="rs()" style="background:#475569">Restart Same Test</button></div></div></div>
 <script>
-const remGailMap = {'q': 'ु','w': 'ू','e': 'म','r': 'त','t': 'ज','y': 'ल','u': 'न','i': 'प','o': 'व','p': 'च','[': 'ख्',']': ',','a': 'ं','s': 'े','d': 'क','f': 'ि','g': 'ह','h': 'ी','j': 'र','k': 'ा','l': 'स',';': 'य','\'': 'श्','z': '्र','x': 'ग','c': 'ब','v': 'अ','b': 'इ','n': 'द','m': 'उ',',': 'ए','.': 'ण्','/': 'ध्','Q': 'फ','W': 'ॅ','E': 'म्','R': 'त्','T': 'ज्','Y': 'ल्','U': 'न्','I': 'प्','O': 'व्','P': 'च्','{': 'क्ष्','}': 'द्व','A': 'ा','S': 'ै','D': 'क्','F': 'थ्','G': 'ळ','H': 'भ्','J': 'श्र','K': 'ज्ञ','L': 'स्',':': 'रू','"': 'ष्','Z': 'र्','X': 'ग्','C': 'ब्','V': 'ट','B': 'ठ','N': 'छ','M': 'ड','<': 'ढ','>': 'झ','?': 'घ्','1': '१','2': '२','3': '३','4': '४','5': '५','6': '६','7': '७','8': '८','9': '९','0': '०','-': ';','_': '.','=': 'ृ','!': '।','@': '/','#': ':','$': '*','%': '-','^': '‘','&': '\'','*': 'द्ध','(': 'त्र',')': 'ऋ','+': '्','`': '़','~': 'द्य','\\': '(','|': ')'};
-const remCBIMap = {'q': 'ु','w': 'ू','e': 'म','r': 'त','t': 'ज','y': 'ल','u': 'न','i': 'प','o': 'व','p': 'च','[': 'ख्',']': ',','a': 'ं','s': 'े','d': 'क','f': 'ि','g': 'ह','h': 'ी','j': 'र','k': 'ा','l': 'स',';': 'य','\'': 'श्','z': '्र','x': 'ग','c': 'ब','v': 'अ','b': 'इ','n': 'द','m': 'उ','Q': 'फ','W': 'ॅ','E': 'म्','R': 'त्','T': 'ज्','Y': 'ल्','U': 'न्','I': 'प्','O': 'व्','P': 'च्','A': 'ा','S': 'ै','D': 'क्','F': 'थ्','G': 'ळ','H': 'भ्','J': 'श्र','K': 'ज्ञ','L': 'स्','Z': 'र्','X': 'ग्','C': 'ब्','V': 'ट','B': 'ठ','N': 'छ','M': 'ड','-': ';','=': 'ृ','`': '़','~': 'द्य','!': '।','@': '//','#': ':','$': '*','%': '-','^': '\'','&': '\'','*': 'द्ध','(': 'त्र',')': 'ऋ','+': '्','{': 'क्ष्','}': 'द्व','<': 'ढ','>': 'झ','?': 'घ्','\\': '(','|': ')','.': 'ण्','/': 'ध्',',': 'ए','_': '.',':': 'रू','"': 'ष्'};
-const inscriptMap = {'q': 'ौ','w': 'ै','e': 'ा','r': 'ी','t': 'ू','y': 'ब','u': 'ह','i': 'ग','o': 'द','p': 'ज','[': 'ड',']': '़','a': 'ो','s': 'े','d': '्','f': 'ि','g': 'ु','h': 'प','j': 'र','k': 'क','l': 'त',';': 'च','\'': 'ट','z': 'ॆ','x': 'ं','c': 'म','v': 'न','b': 'व','n': 'ल','m': 'स',',': ',','.': '.','/': 'य','Q': 'औ','W': 'ऐ','E': 'आ','R': 'ई','T': 'ऊ','Y': 'भ','U': 'ङ','I': 'घ','O': 'ध','P': 'झ','{': 'ढ','}': 'ञ','A': 'ओ','S': 'ए','D': 'अ','F': 'इ','G': 'उ','H': 'फ','J': 'ऱ','K': 'ख','L': 'थ',':': 'छ','"': 'ठ','Z': 'ऎ','X': 'ँ','C': 'ण','V': 'ऩ','B': 'ऴ','N': 'ळ','M': 'श','<': 'ष','>': '।','?': 'य़','1': '१','2': '२','3': '३','4': '४','5': '५','6': '६','7': '७','8': '८','9': '९','0': '०','!': 'ऍ','@': 'ॅ','#': '्र','$': 'र्','%': 'ज्ञ','^': 'त्र','&': 'क्ष','*': 'श्र','-': '-','+': 'ऋ','_': 'ः','=': 'ृ','~': 'ऒ','`': 'ॊ','|': 'ऑ','\\': 'ॉ'};
-const indicMap = {'a': 'अ','A': 'ा','b': 'ब','B': 'भ','c': 'च','C': 'छ','d': 'द','D': 'ध','e': 'े','E': 'ै','f': 'फ','F': 'फ़','g': 'ग','G': 'घ','h': 'ह','H': 'ः','i': 'ि','I': 'ी','j': 'ज','J': 'झ','k': 'क','K': 'ख','l': 'ल','L': 'ळ','m': 'म','M': 'ं','n': 'न','N': 'ण','o': 'ो','O': 'ौ','p': 'प','P': 'फ','r': 'र','R': 'ृ','s': 'स','S': 'श','t': 'त','T': 'थ','u': 'ु','U': 'ू','v': 'व','x': 'क्ष','X': 'ज्ञ','y': 'य','.': '।','_': "'" };
-const IM = {'g': remGailMap,'c': remCBIMap,'i': inscriptMap,'p': indicMap};
-const VM = {'अ': '','आ': 'ा','इ': 'ि','ई': 'ी','उ': 'ु','ऊ': 'ू','ए': 'े','ऐ': 'ै','ओ': 'ो','औ': 'ौ','ऋ': 'ृ','ऍ': 'ॅ'};
-const RM = {'1': '1','2': '2','3': '3','4': '4','5': '5','6': '6','7': '7','8': '8','9': '9','0': '0'};
-const LM = {'1': '१','2': '२','3': '३','4': '४','5': '५','6': '६','7': '७','8': '८','9': '९','0': '०'};
-let cm = "", stT, tmr, plist = {}, sc = 1, tfs = 1.1, bsc = 0, pn = "", lib = [], imeS = {wI: false, dK: false, pK: '', nI: false, altBypass: false}, editIdx = -1;
-let isBold = false, isItalic = false;
-let activeWords = [];
-let rawWords = [];
-const src = [
-{t: "Registry", u: "https://gist.githubusercontent.com/vs-parihar/80a61d62dd93b9e496a8db28ad9eee5c/raw/registry.json", m: 0},
-{t: "English", u: "https://api.github.com/gists/f5bf18c404ac6c4649b207a2cb83aefd", m: 1},
-{t: "Hindi", u: "https://api.github.com/gists/8e9911bc62761d6fb5407d8b76d67c97", m: 1},
-{t: "Local", u: "assets/matters", m: 2}
-];
-const altCodes = [
-"Alt + 033 = !", "Alt + 034 = \"", "Alt + 035 = #", "Alt + 036 = $", "Alt + 037 = %", "Alt + 038 = &", "Alt + 039 = '", "Alt + 040 = (", "Alt + 041 = )", "Alt + 042 = *", "Alt + 043 = +", "Alt + 044 = ,", "Alt + 045 = -", "Alt + 046 = .", "Alt + 047 = /", "Alt + 058 = :", "Alt + 059 = ;", "Alt + 060 = <", "Alt + 061 = =", "Alt + 062 = >", "Alt + 063 = ?", "Alt + 064 = @", "Alt + 091 = [", "Alt + 092 = \\", "Alt + 093 = ]", "Alt + 094 = ^", "Alt + 095 = _", "Alt + 096 = `", "Alt + 0123 = {", "Alt + 0124 = |", "Alt + 0125 = }", "Alt + 0145 = ‘", "Alt + 0146 = ’", "Alt + 0147 = “", "Alt + 0148 = ”", "Alt + 0149 = •", "Alt + 0150 = –", "Alt + 0151 = —", "Alt + 0152 = ˜", "Alt + 0153 = ™", "Alt + 0154 = š", "Alt + 0155 = ›", "Alt + 0156 = œ", "Alt + 0169 = ©", "Alt + 0184 = ¸", "Alt + 0189 = 1⁄2", "Alt + 0190 = 3⁄4", "Alt + 0215 = ×", "Alt + 0216 = Ø", "Alt + 0222 = Þ", "Alt + 0247 = ÷"
-];
-const get = (id) => document.getElementById(id);
-const sm = (id) => {
-document.querySelectorAll('.m').forEach(m => m.classList.remove('active'));
-get(id).classList.add('active');
-};
-const ui = (t, el) => {
-if (t === 'd') { document.body.classList.toggle('dark'); }
-if (t === 't+') tfs += 0.05;
-if (t === 't-') tfs -= 0.05;
-if (t === 's+') sc += 0.05;
-if (t === 's-') sc -= 0.05;
-if (t === 'b') { isBold = !isBold; if (el) el.classList.toggle('active-toggle', isBold); }
-if (t === 'l') { isItalic = !isItalic; if (el) el.classList.toggle('active-toggle', isItalic); }
-document.documentElement.style.setProperty('--tfs', tfs + 'rem');
-document.body.style.setProperty('--sc', sc);
-document.documentElement.style.setProperty('--fw', isBold ? 'bold' : 'normal');
-document.documentElement.style.setProperty('--fs', isItalic ? 'italic' : 'normal');
-document.querySelectorAll('.cb button[data-action="b"]').forEach(b => b.classList.toggle('active-toggle', isBold));
-document.querySelectorAll('.cb button[data-action="l"]').forEach(b => b.classList.toggle('active-toggle', isItalic));
-svC();
-};
-const setupControls = () => {
-document.querySelectorAll('.cb').forEach(c => {
-const altBtn = `<button class="outline-indigo" onclick="get('instr-modal').classList.add('active')">Alt Codes</button>`;
-const f = `
-<button onclick="ui('t+', this)">A+</button>
-<button onclick="ui('t-', this)">A-</button>
-<button data-action="b" onclick="ui('b', this)" class="${isBold ? 'active-toggle' : ''}">B</button>
-<button data-action="l" onclick="ui('l', this)" class="${isItalic ? 'active-toggle' : ''}">I</button>
-`;
-c.innerHTML = `
-${altBtn}
-<button onclick="ui('d', this)">🌓</button>
-${c.dataset.type !== 'n' ? f : ''}
-<button onclick="ui('s+', this)">Z+</button>
-<button onclick="ui('s-', this)">Z-</button>
-`;
-});
-};
-const svC = () => {
-const data = {
-un: get('un').value,
-tl: get('tl').value,
-ime: get('ime').value,
-ip: get('ip').value,
-pt: get('pt').checked,
-bk: get('bk').checked,
-hi: get('hi').checked,
-as: get('as').checked,
-wl: get('wl').checked,
-wv: get('wv').value,
-dark: document.body.classList.contains('dark'),
-sc, tfs, lib, isBold, isItalic,
-ps_val: get('ps').value,
-ms_idx: get('ms').selectedIndex,
-cms_idx: get('cms').selectedIndex
-};
-localStorage.setItem('tp_v42_final', JSON.stringify(data));
-};
-const ldC = () => {
-const c = JSON.parse(localStorage.getItem('tp_v42_final'));
-if (!c) { tp(false); setupControls(); return; }
-get('un').value = c.un;
-get('tl').value = c.tl;
-get('ime').value = c.ime || 'e';
-get('ip').value = c.ip || 5;
-get('pt').checked = c.pt;
-get('bk').checked = c.bk;
-get('hi').checked = c.hi;
-get('as').checked = c.as;
-get('wl').checked = c.wl;
-get('wv').value = c.wv;
-get('wv').style.display = c.wl ? 'inline' : 'none';
-if (c.dark) document.body.classList.add('dark'); else document.body.classList.remove('dark');
-sc = c.sc || 1;
-tfs = c.tfs || 1.1;
-lib = c.lib || [];
-isBold = c.isBold === undefined ? false : !!c.isBold;
-isItalic = c.isItalic === undefined ? false : !!c.isItalic;
-rlb();
-tp(c.pt);
-ui('');
-setupControls();
-};
-const rlb = () => {
-const s = get('cms'), l = get('ll');
-s.innerHTML = ''; l.innerHTML = '';
-lib.forEach((m, i) => {
-s.innerHTML += `<option value="${i}">${m.t}</option>`;
-l.innerHTML += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid var(--bd)"><span style="font-size:0.85rem">${m.t}</span><div style="display:flex;gap:4px"><button class="bs" onclick="edl(${i})">Edit</button><button class="bs" onclick="rml(${i})" style="color:#ef4444">X</button></div></div>`
-})
-};
-const al = () => {
-const t = get('ct').value, x = get('cx').value;
-if (!x.trim()) return;
-if (editIdx > -1) { lib[editIdx] = {t: t || (x.slice(0, 12) + '...'), x: x.trim()}; editIdx = -1; get('lib-save-btn').textContent = "Add to Library" }
-else { lib.push({t: t || (x.slice(0, 12) + '...'), x: x.trim()}) }
-get('ct').value = ''; get('cx').value = ''; rlb(); svC();
-};
-const edl = (i) => { editIdx = i; get('ct').value = lib[i].t; get('cx').value = lib[i].x; get('lib-save-btn').textContent = "Update Matter" };
-const rml = (i) => { if (confirm("Delete this matter?")) { lib.splice(i, 1); rlb(); svC() } };
-const tp = (v) => { document.querySelectorAll('.du').forEach(e => e.style.display = v ? 'none' : 'flex'); document.querySelectorAll('.cu').forEach(e => e.style.display = v ? 'flex' : 'none') };
-const lp = (n) => {
-const s = get('ms'); s.innerHTML = ''; pn = n;
-if (plist[n]) plist[n].forEach((m, i) => s.innerHTML += `<option value="${i}">${m.title}</option>`);
-svC();
-};
-const nm = (t) => t ? t.normalize('NFC').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/ाे/g, 'ो').replace(/ाै/g, 'ौ').trim() : "";
-async function init() {
-const altCont = get('alt-codes-container');
-altCodes.forEach(code => {
-const div = document.createElement('div');
-div.className = 'alt-item';
-div.textContent = code;
-altCont.appendChild(div);
-});
-ldC();
-for (let s of src) {
-try {
-if(s.m===2){
-for(let i=1;i<=20;i++){
-const pN=`Playlist ${i}`,u=`${s.u}/${pN}/matter.txt`;
-try{
-const r=await fetch(u);
-if(r.ok){if(!plist[pN])plist[pN]=[];plist[pN].push({title:`Matter ${i}`,matter:u})}
-}catch(e){}
-}
-} else {
-const r = await fetch(s.u), d = await r.json();
-if (s.m === 0) {
-for (let p of d) {
-const rI = p.id.split('/').pop(), pr = await fetch(`https://gist.githubusercontent.com/vs-parihar/${rI}/raw/playlist.json`), pl = await pr.json();
-if (!plist[p.title]) plist[p.title] = [];
-plist[p.title].push(...pl)
-}
-} else {
-if (!plist[s.t]) plist[s.t] = [];
-Object.values(d.files).forEach(f => plist[s.t].push({title: f.filename, matter: f.raw_url}))
-}
-}
-} catch (e) {}
-}
-const pS = get('ps');
-pS.innerHTML = '';
-Object.keys(plist).forEach(k => pS.innerHTML += `<option value="${k}">${k}</option>`);
-const c = JSON.parse(localStorage.getItem('tp_v42_final'));
-if (c) {
-if (c.ps_val) pS.value = c.ps_val;
-lp(pS.value);
-if (c.ms_idx !== undefined) get('ms').selectedIndex = c.ms_idx;
-if (c.cms_idx !== undefined) get('cms').selectedIndex = c.cms_idx
-} else if (pS.options.length) { lp(pS.value) }
-}
-async function st() {
-svC();
-const b = get('sb'), ot = b.textContent;
-let mName = ""; b.disabled = true; b.textContent = "Wait...";
-if (get('pt').checked) {
-if (!lib.length) { b.textContent = ot; return (b.disabled = false) }
-const sel = lib[get('cms').value]; cm = sel.x; mName = sel.t; pn = "Library"
-} else {
-const m = plist[pn] ? plist[pn][get('ms').value] : null; mName = m ? m.title : "Matter";
-try {
-if (m && m.matter) cm = await (await fetch(m.matter)).text();
-else if (m && m.raw_url) cm = await (await fetch(m.raw_url)).text();
-else if (m && m.url) { const d = await (await fetch(`https://archive.org/metadata/${m.url.split('/').pop()}`)).json(); cm = (d.metadata.description || m.title).replace(/<[^>]*>/g, '') }
-else cm = m ? m.title : ""
-} catch (e) { cm = m ? m.title : "" }
-}
-setup(cm, mName); b.disabled = false; b.textContent = ot
-}
-function setup(txt, mName) {
-rawWords = txt.split(/\s+/).filter(x => x);
-const isWordLimit = get('wl').checked;
-const limit = isWordLimit ? parseInt(get('wv').value) : Infinity;
-activeWords = isWordLimit ? rawWords.slice(0, limit) : [...rawWords];
-const tt = get('tt'); tt.scrollTop = 0; tt.innerHTML = ''; tt.classList.toggle('as-on', get('as').checked);
-const addWordToUI = (wordText) => {
-const span = document.createElement('span');
-span.textContent = wordText;
-tt.appendChild(span);
-};
-activeWords.forEach(addWordToUI);
-const iS = get('ime'), mod = iS.value, kName = iS.options[iS.selectedIndex].text;
-get('typing-info').textContent = `${kName} • ${mName}`;
-const i = get('ia'); i.value = ''; bsc = 0; sm('typ'); i.focus();
-imeS = {wI: false, dK: false, pK: '', nI: false, altBypass: false};
-stT = new Date();
-const timerLim = get('tl').value * 60;
-clearInterval(tmr);
-tmr = setInterval(() => {
-const e = Math.floor((new Date() - stT) / 1000), r = timerLim - e;
-if (r <= 0) ft();
-get('lt').textContent = `${Math.floor(r / 60)}:${(r % 60).toString().padStart(2, '0')}`
-}, 1000);
-i.onkeydown = (e) => {
-imeS.altBypass = e.altKey;
-if (e.altKey) return;
-if (mod !== 'e' && /[0-9]/.test(e.key) && !e.ctrlKey) {
-imeS.nI = true;
-const c = get('ia'), s = c.selectionStart, v = c.value, k = e.key;
-const isCapsLock = e.getModifierState('CapsLock');
-const mappedNum = isCapsLock ? LM[k] : RM[k];
-e.preventDefault();
-c.value = v.slice(0, s) + mappedNum + v.slice(c.selectionEnd);
-c.setSelectionRange(s + mappedNum.length, s + mappedNum.length);
-c.dispatchEvent(new Event('input')); return
-} else { imeS.nI = false }
-if (e.key === 'Backspace') {
-imeS.wI = false; imeS.pK = '';
-const v = i.value, s = i.selectionStart;
-if (mod === 'g' || mod === 'c') {
-if (v.slice(s - 2, s) === '\u25cc\u093f') {
-e.preventDefault(); i.value = v.slice(0, s - 2) + v.slice(s);
-i.setSelectionRange(s - 2, s - 2); i.dispatchEvent(new Event('input')); return
-}
-}
-bsc++; if (!get('bk').checked) e.preventDefault()
-}
-};
-i.onbeforeinput = (v) => {
-if (imeS.altBypass || v.inputType === 'insertCompositionText') return;
-if (imeS.nI) { v.preventDefault(); return }
-if (mod === 'e' || v.inputType.includes('delete')) return;
-if (!v.data || v.data === ' ') { imeS.dK = false; imeS.wI = false; imeS.pK = ''; return }
-if (v.data.length > 1) return;
-v.preventDefault();
-let k = v.data, map = IM[mod], m = map[k] || k, char = m, st = i.selectionStart, en = i.selectionEnd, val = i.value;
-if (mod !== 'e') {
-let prv = val.slice(0, st);
-if (prv.endsWith('्')) {
-if (VM[char] !== undefined) { val = prv.slice(0, -1); st-- }
-else if (char === 'ा') { val = prv.slice(0, -1); st--; char = '' }
-}
-}
-if (mod === 'g' || mod === 'c') {
-let p = val[st - 1];
-if (k === 'f') { char = '\u25cc\u093f'; imeS.wI = true }
-else if (imeS.wI) { if (val.slice(st - 2, st) === '\u25cc\u093f') { val = val.slice(0, st - 2); st -= 2; char = char + '\u093f'; imeS.wI = false } }
-if (k === 'k') {
-if (p === 'अ') char = (val = val.slice(0, -1), st--, 'आ');
-else if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ओ');
-else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ो');
-else if (p === 'ओ') char = (val = val.slice(0, -1), st--, 'औ');
-else if (p === 'ो') char = (val = val.slice(0, -1), st--, 'ौ');
-}
-if (k === 'S') {
-if (p === 'आ') char = (val = val.slice(0, -1), st--, 'औ');
-else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ौ');
-else if (p === 'ए') char = (val = val.slice(0, -1), st--, 'ऐ');
-else if (p === 'े') char = (val = val.slice(0, -1), st--, 'ै');
-}
-if (k === 'W') {
-if (p === 'आ') char = (val = val.slice(0, -1), st--, 'ऑ');
-else if (p === 'ा') char = (val = val.slice(0, -1), st--, 'ॉ');
-}
-if (k === 'a') {
-if (p === 'ॅ' || p === 'ॉ') char = (val = val.slice(0, -1), st--, 'ँ');
-}
-if (k === 'Q') {
-if (p === 'उ') char = (val = val.slice(0, -1), st--, 'ऊ');
-if (p === 'र') char = (val = val.slice(0, -1), st--, 'रू');
-}
-if (k === 'Z') {
-if (p === 'इ') char = (val = val.slice(0, -1), st--, 'ई');
-}
-}
-i.value = val.slice(0, st) + char + val.slice(en);
-i.setSelectionRange(st + char.length, st + char.length);
-imeS.pK = k; i.dispatchEvent(new Event('input'))
-};
-i.oninput = () => {
-const val = i.value;
-const typedWords = val.split(/\s+/);
-const isWordEnd = val.endsWith(' ');
-const currentWordIndex = isWordEnd ? typedWords.length - 1 : typedWords.length - 1;
-if (!get('wl').checked && currentWordIndex >= activeWords.length - 10) {
-const batch = rawWords.slice(0, 50);
-activeWords.push(...batch);
-batch.forEach(w => {
-const span = document.createElement('span');
-span.textContent = w;
-get('tt').appendChild(span);
-});
-}
-const spans = get('tt').querySelectorAll('span');
-let correctCount = 0; let evaluatedCount = 0;
-spans.forEach((s, idx) => {
-s.className = '';
-const typed = typedWords[idx] || "";
-const target = activeWords[idx] || "";
-if (idx < currentWordIndex) {
-const isCorrect = nm(typed) === nm(target);
-if (isCorrect) correctCount++;
-evaluatedCount++;
-if (get('hi').checked) s.classList.add(isCorrect ? 'cor' : 'inc');
-} else if (idx === currentWordIndex) {
-s.classList.add('active-word');
-if (get('as').checked) s.scrollIntoView({ block: 'center', behavior: 'smooth' });
-}
-});
-const minutes = Math.max((new Date() - stT) / 60000, 0.01);
-const grossWpm = (val.length / 5) / minutes;
-const mistakes = evaluatedCount - correctCount;
-const netWpm = Math.max(0, grossWpm - (mistakes / minutes));
-get('ls').textContent = `${Math.round(grossWpm)} | ${Math.round(netWpm)}`;
-get('la').textContent = `${Math.round(evaluatedCount ? (correctCount / evaluatedCount) * 100 : 0)}% | ${evaluatedCount}`;
-}
-}
-function ft() {
-clearInterval(tmr);
-const val = get('ia').value.trim();
-const typedArr = val.split(/\s+/).filter(x => x);
-const duration = Math.max((new Date() - stT) / 60000, 0.1);
-const ignorablePercent = parseFloat(get('ip').value) || 0;
-const spans = get('tt').querySelectorAll('span');
-let correct = 0, errors = 0, summaryHtml = "";
-typedArr.forEach((u, i) => {
-const w = spans[i] ? spans[i].textContent : "";
-if (nm(u) !== nm(w)) { errors++; summaryHtml += `<span class="inc">${w} </span>` }
-else { correct++; summaryHtml += `<span class="cor">${w} </span>` }
-});
-const grossWpm = (get('ia').value.length / 5) / duration, accuracy = typedArr.length ? (correct / typedArr.length) * 100 : 0;
-const m1Net = Math.max(0, grossWpm - (errors / duration));
-const penalty2 = errors * 10, m2Net = Math.max(0, grossWpm - (penalty2 / duration));
-const ignorableCount = Math.floor(typedArr.length * ignorablePercent / 100);
-const netMistakes = Math.max(0, errors - ignorableCount), penalty3 = netMistakes * 10, m3Net = Math.max(0, grossWpm - (penalty3 / duration));
-let h = `<div class="sg"><div class="mh">Method 1: ${pn}</div><div class="ms">${m1Net.toFixed(2)} WPM</div><div class="rl"><span>Accuracy</span><span>${accuracy.toFixed(2)} %</span></div><div class="rl"><span>Total Errors</span><span>${errors}</span></div></div>`;
-h += `<div class="sg"><div class="mh">Method 2: Full Penalty</div><div class="ms">${m2Net.toFixed(2)} WPM</div></div>`;
-h += `<div class="sg"><div class="mh">Method 3: ${ignorablePercent}% Ignorable</div><div class="ms">${m3Net.toFixed(2)} WPM</div></div>`;
-get('rc').innerHTML = h; get('dv').innerHTML = summaryHtml; sm('res')
-}
-window.onload = init;
+const remGailMap={'q':'ु','w':'ू','e':'म','r':'त','t':'ज','y':'ल','u':'न','i':'प','o':'व','p':'च','[':'ख्',']':',','a':'ं','s':'े','d':'क','f':'ि','g':'ह','h':'ी','j':'र','k':'ा','l':'स',';':'य','\'':'श्','z':'्र','x':'ग','c':'ब','v':'अ','b':'इ','n':'द','m':'उ',',':'ए','.':'ण्','/':'ध्','Q':'फ','W':'ॅ','E':'म्','R':'त्','T':'ज्','Y':'ल्','U':'न्','I':'प्','O':'व्','P':'च्','{':'क्ष्','}':'द्व','A':'ा','S':'ै','D':'क्','F':'थ्','G':'ळ','H':'भ्','J':'श्र','K':'ज्ञ','L':'स्',':':'रू','"':'ष्','Z':'र्','X':'ग्','C':'ब्','V':'ट','B':'ठ','N':'छ','M':'ड','<':'ढ','>':'झ','?':'घ्','1':'१','2':'२','3':'३','4':'४','5':'५','6':'६','7':'७','8':'८','9':'९','0':'०','-':';','_':'.','=':'ृ','!':'।','@':'/','#':':','$':'*','%':'-','^':'‘','&':'\'','*':'द्ध','(':'त्र',')':'ऋ','+':'्','`':'़','~':'द्य','\\':'(','|':')'};
+const remCBIMap={'q':'ु','w':'ू','e':'म','r':'त','t':'ज','y':'ल','u':'न','i':'प','o':'व','p':'च','[':'ख्',']':',','a':'ं','s':'े','d':'क','f':'ि','g':'ह','h':'ी','j':'र','k':'ा','l':'स',';':'य','\'':'श्','z':'्र','x':'ग','c':'ब','v':'अ','b':'इ','n':'द','m':'उ','Q':'फ','W':'ॅ','E':'म्','R':'त्','T':'ज्','Y':'ल्','U':'न्','I':'प्','O':'व्','P':'च्','A':'ा','S':'ै','D':'क्','F':'थ्','G':'ळ','H':'भ्','J':'श्र','K':'ज्ञ','L':'स्','Z':'र्','X':'ग्','C':'ब्','V':'ट','B':'ठ','N':'छ','M':'ड','-':';','=':'ृ','`':'़','~':'द्य','!':'।','@':'//','#':':','$':'*','%':'-','^':'\'','&':'\'','*':'द्ध','(':'त्र',')':'ऋ','+':'्','{':'क्ष्','}':'द्व','<':'ढ','>':'झ','?':'घ्','\\':'(','|':')','/':'ध्',',':'ए','_':'.',':':'रू','"':'ष्','.':'ण्'};
+const inscriptMap={'q':'ौ','w':'ै','e':'ा','r':'ी','t':'ू','y':'ब','u':'ह','i':'ग','o':'द','p':'ज','[':'ड',']':'़','a':'ो','s':'े','d':'्','f':'ि','g':'ु','h':'प','j':'र','k':'क','l':'त',';':'च','\'':'ट','z':'ॆ','x':'ं','c':'म','v':'न','b':'व','n':'ल','m':'स',',':',','.':'.','/':'य','Q':'औ','W':'ऐ','E':'आ','R':'ई','T':'ऊ','Y':'भ','U':'ङ','I':'घ','O':'ध','P':'झ','{':'ढ','}':'ञ','A':'ओ','S':'ए','D':'अ','F':'इ','G':'उ','H':'फ','J':'ऱ','K':'ख','L':'थ',':':'छ','"':'ठ','Z':'ऎ','X':'ँ','C':'ण','V':'ऩ','B':'ऴ','N':'ळ','M':'श','<':'ष','>':'।','?':'य़','1':'१','2':'२','3':'३','4':'४','5':'५','6':'६','7':'७','8':'८','9':'९','0':'०','!':'ऍ','@':'ॅ','#':'्र','$':'र्','%':'ज्ञ','^':'त्र','&':'क्ष','*':'श्र','-':'-','+':'ऋ','_':'ः','=':'ृ','~':'ऒ','`':'ॊ','|':'ऑ','\\':'ॉ'};
+const indicMap={'a':'अ','A':'ा','b':'ब','B':'भ','c':'च','C':'छ','d':'द','D':'ध','e':'े','E':'ै','f':'फ','F':'फ़','g':'ग','G':'घ','h':'ह','H':'ः','i':'ि','I':'ी','j':'ज','J':'झ','k':'क','K':'ख','l':'ल','L':'ळ','m':'म','M':'ं','n':'न','N':'ण','o':'ो','O':'ौ','p':'प','P':'फ','r':'र','R':'ृ','s':'स','S':'श','t':'त','T':'थ','u':'ु','U':'ू','v':'व','x':'क्ष','X':'ज्ञ','y':'य','.':'।','_':"'"};
+const IM={'g':remGailMap,'c':remCBIMap,'i':inscriptMap,'p':indicMap};
+const VM={'अ':'','आ':'ा','इ':'ि','ई':'ी','उ':'ु','ऊ':'ू','ए':'े','ऐ':'ै','ओ':'ो','औ':'ौ','ऋ':'ृ','ऍ':'ॅ'};
+const RM={'1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9','0':'0'};
+const LM={'1':'१','2':'२','3':'३','4':'४','5':'५','6':'६','7':'७','8':'८','9':'९','0':'०'};
+let cm="",stT,tmr,plist={},sc=1,tfs=1.1,bsc=0,pn="",lib=[],imeS={wI:false,pK:'',nI:false,altBypass:false,vT:false},editIdx=-1,isBold=false,isItalic=false,activeWords=[],rawWords=[],timerStarted=false,curMName="";
+const src=[{t:"Registry",u:"https://gist.githubusercontent.com/vs-parihar/80a61d62dd93b9e496a8db28ad9eee5c/raw/registry.json",m:0},{t:"English",u:"https://api.github.com/gists/f5bf18c404ac6c4649b207a2cb83aefd",m:1},{t:"Hindi",u:"https://api.github.com/gists/8e9911bc62761d6fb5407d8b76d67c97",m:1},{t:"Local",u:"assets/matters",m:2}];
+const altCodes=["Alt + 033 = !","Alt + 034 = \"","Alt + 035 = #","Alt + 036 = $","Alt + 037 = %","Alt + 038 = &","Alt + 039 = '","Alt + 040 = (","Alt + 041 = )","Alt + 042 = *","Alt + 043 = +","Alt + 044 = ,","Alt + 045 = -","Alt + 046 = .","Alt + 047 = /","Alt + 058 = :","Alt + 059 = ;","Alt + 060 = <","Alt + 061 = =","Alt + 062 = >","Alt + 063 = ?","Alt + 064 = @","Alt + 091 = [","Alt + 092 = \\","Alt + 093 = ]","Alt + 094 = ^","Alt + 095 = _","Alt + 096 = `","Alt + 0123 = {","Alt + 0124 = |","Alt + 0125 = }","Alt + 0145 = ‘","Alt + 0146 = ’","Alt + 0147 = “","Alt + 0148 = ”","Alt + 0149 = •","Alt + 0150 = –","Alt + 0151 = —","Alt + 0152 = ˜","Alt + 0153 = ™","Alt + 0154 = š","Alt + 0155 = ›","Alt + 0156 = œ","Alt + 0169 = ©","Alt + 0184 = ¸","Alt + 0189 = 1⁄2","Alt + 0190 = 3⁄4","Alt + 0215 = ×","Alt + 0216 = Ø","Alt + 0222 = Þ","Alt + 0247 = ÷"];
+const get=(id)=>document.getElementById(id);
+const sm=(id)=>{document.querySelectorAll('.m').forEach(m=>m.classList.remove('active'));get(id).classList.add('active')};
+const ui=(t,el)=>{if(t==='d')document.body.classList.toggle('dark');if(t==='t+')tfs+=0.05;if(t==='t-')tfs-=0.05;if(t==='s+')sc+=0.05;if(t==='s-')sc-=0.05;if(t==='b'){isBold=!isBold;if(el)el.classList.toggle('active-toggle',isBold)}if(t==='l'){isItalic=!isItalic;if(el)el.classList.toggle('active-toggle',isItalic)}document.documentElement.style.setProperty('--tfs',tfs+'rem');document.body.style.setProperty('--sc',sc);document.documentElement.style.setProperty('--fw',isBold?'bold':'normal');document.documentElement.style.setProperty('--fs',isItalic?'italic':'normal');document.querySelectorAll('.cb button[data-action="b"]').forEach(b=>b.classList.toggle('active-toggle',isBold));document.querySelectorAll('.cb button[data-action="l"]').forEach(b=>b.classList.toggle('active-toggle',isItalic));svC()};
+const setupControls=()=>{document.querySelectorAll('.cb').forEach(c=>{const altBtn=`<button class="outline-indigo" onclick="get('instr-modal').classList.add('active')">Alt Codes</button>`;const f=`<button onclick="ui('t+', this)">A+</button><button onclick="ui('t-', this)">A-</button><button data-action="b" onclick="ui('b', this)" class="${isBold?'active-toggle':''}">B</button><button data-action="l" onclick="ui('l', this)" class="${isItalic?'active-toggle':''}">I</button>`;c.innerHTML=`${altBtn}<button onclick="ui('d', this)">🌓</button>${c.dataset.type!=='n'?f:''}<button onclick="ui('s+', this)">Z+</button><button onclick="ui('s-', this)">Z-</button>`})};
+const tglHi=(e)=>{const h=get('hi').checked,a=get('as');if(!h){a.checked=false;a.disabled=true;a.parentElement.style.opacity="0.5";}else{if(e)a.checked=true;a.disabled=false;a.parentElement.style.opacity="1";}svC();};
+const svC=()=>{const data={un:get('un').value,tl:get('tl').value,ime:get('ime').value,ip:get('ip').value,pt:get('pt').checked,bk:get('bk').checked,hi:get('hi').checked,as:get('as').checked,wl:get('wl').checked,wv:get('wv').value,dark:document.body.classList.contains('dark'),sc,tfs,lib,isBold,isItalic,ps_val:get('ps').value,ms_idx:get('ms').selectedIndex,cms_idx:get('cms').selectedIndex};localStorage.setItem('tp_v42_final',JSON.stringify(data))};
+const ldC=()=>{const c=JSON.parse(localStorage.getItem('tp_v42_final'));if(!c){tp(false);setupControls();return}get('un').value=c.un;get('tl').value=c.tl;get('ime').value=c.ime||'e';get('ip').value=c.ip||5;get('pt').checked=c.pt;get('bk').checked=c.bk;get('hi').checked=c.hi!==undefined?c.hi:true;get('as').checked=c.as!==undefined?c.as:true;tglHi(null);get('wl').checked=c.wl;get('wv').value=c.wv;get('wv').style.display=c.wl?'inline':'none';if(c.dark)document.body.classList.add('dark');else document.body.classList.remove('dark');sc=c.sc||1;tfs=c.tfs||1.1;lib=c.lib||[];isBold=!!c.isBold;isItalic=!!c.isItalic;rlb();tp(c.pt);ui('');setupControls()};
+const rlb=()=>{const s=get('cms'),l=get('ll');s.innerHTML='';l.innerHTML='';lib.forEach((m,i)=>{s.innerHTML+=`<option value="${i}">${m.t}</option>`;l.innerHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid var(--bd)"><span style="font-size:0.85rem">${m.t}</span><div style="display:flex;gap:4px"><button class="bs" onclick="edl(${i})">Edit</button><button class="bs" onclick="rml(${i})" style="color:#ef4444">X</button></div></div>`})};
+const al=()=>{const t=get('ct').value,x=get('cx').value;if(!x.trim())return;if(editIdx>-1){lib[editIdx]={t:t||(x.slice(0,12)+'...'),x:x.trim()};editIdx=-1;get('lib-save-btn').textContent="Add to Library"}else{lib.push({t:t||(x.slice(0,12)+'...'),x:x.trim()})}get('ct').value='';get('cx').value='';rlb();svC()};
+const edl=(i)=>{editIdx=i;get('ct').value=lib[i].t;get('cx').value=lib[i].x;get('lib-save-btn').textContent="Update Matter"};
+const rml=(i)=>{if(confirm("Delete?")){lib.splice(i,1);rlb();svC()}};
+const tp=(v)=>{document.querySelectorAll('.du').forEach(e=>e.style.display=v?'none':'flex');document.querySelectorAll('.cu').forEach(e=>e.style.display=v?'flex':'none')};
+const lp=(n)=>{const s=get('ms');s.innerHTML='';pn=n;s.innerHTML+=`<option value="rnd">Random</option><option value="rnd_words">Random words from the playlist</option>`;if(plist[n])plist[n].forEach((m,i)=>s.innerHTML+=`<option value="${i}">${m.title}</option>`);svC()};
+const nm=(t)=>t?t.normalize('NFC').replace(/[\u200B-\u200D\uFEFF]/g,'').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/ाे/g,'ो').replace(/ाै/g,'ौ').trim():"";
+async function init(){const altCont=get('alt-codes-container');altCodes.forEach(code=>{const div=document.createElement('div');div.className='alt-item';div.textContent=code;altCont.appendChild(div)});ldC();for(let s of src){try{if(s.m===2){for(let i=1;i<=20;i++){const pN=`Playlist ${i}`,u=`${s.u}/${pN}/matter.txt`;try{const r=await fetch(u);if(r.ok){if(!plist[pN])plist[pN]=[];plist[pN].push({title:`Matter ${i}`,matter:u})}}catch(e){}}}else{const r=await fetch(s.u),d=await r.json();if(s.m===0){for(let p of d){const rI=p.id.split('/').pop(),pr=await fetch(`https://gist.githubusercontent.com/vs-parihar/${rI}/raw/playlist.json`),pl=await pr.json();if(!plist[p.title])plist[p.title]=[];plist[p.title].push(...pl)}}else{if(!plist[s.t])plist[s.t]=[];Object.values(d.files).forEach(f=>plist[s.t].push({title:f.filename,matter:f.raw_url}))}}}catch(e){}}const pS=get('ps');pS.innerHTML='';Object.keys(plist).forEach(k=>pS.innerHTML+=`<option value="${k}">${k}</option>`);const c=JSON.parse(localStorage.getItem('tp_v42_final'));let defPs=Object.keys(plist).find(k=>k.toLowerCase()==='hindi')||Object.keys(plist).find(k=>k.toLowerCase()==='english')||Object.keys(plist)[0];if(c&&c.ps_val&&plist[c.ps_val])pS.value=c.ps_val;else pS.value=defPs;lp(pS.value);if(c&&c.ms_idx!==undefined&&c.ms_idx<get('ms').options.length)get('ms').selectedIndex=c.ms_idx;if(c&&c.cms_idx!==undefined)get('cms').selectedIndex=c.cms_idx}
+async function st(){svC();const b=get('sb'),ot=b.textContent;let mName="";b.disabled=true;b.textContent="Wait...";if(get('pt').checked){if(!lib.length){b.textContent=ot;return(b.disabled=false)}const sel=lib[get('cms').value];cm=sel.x;mName=sel.t;pn="Library"}else{pn=get('ps').value;const msVal=get('ms').value;let m;if(msVal==='rnd'){const rIdx=Math.floor(Math.random()*plist[pn].length);m=plist[pn][rIdx];mName="Random: "+m.title;}else if(msVal==='rnd_words'){mName="Random Words";let fetches=plist[pn].map(x=>x.matter?fetch(x.matter).then(r=>r.text()):(x.raw_url?fetch(x.raw_url).then(r=>r.text()):Promise.resolve(x.title)));let results=await Promise.all(fetches.map(p=>p.catch(()=>"")));let allTxt=results.join(" ").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()|'"“”‘’]/g,"");let wds=allTxt.split(/\s+/).filter(x=>x);for(let i=wds.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[wds[i],wds[j]]=[wds[j],wds[i]];}cm=wds.join(" ");m=null;}else{m=plist[pn][msVal];mName=m?m.title:"Matter";}if(m){try{if(m.matter)cm=await(await fetch(m.matter)).text();else if(m.raw_url)cm=await(await fetch(m.raw_url)).text();else if(m.url){const d=await(await fetch(`https://archive.org/metadata/${m.url.split('/').pop()}`)).json();cm=(d.metadata.description||m.title).replace(/<[^>]*>/g,'')}else cm=m.title;}catch(e){cm=m.title;}}}curMName=mName;setup(cm,mName);b.disabled=false;b.textContent=ot}
+function rs(){setup(cm,curMName);sm('typ')}
+function setup(txt,mName){const hi=get('hi').checked;let pTxt=txt;if(!hi)pTxt=txt.replace(/[ \t]+/g,' ').replace(/\n\s*\n+/g,'\n').trim();rawWords=pTxt.split(/\s+/).filter(x=>x);const isWL=get('wl').checked,limit=isWL?parseInt(get('wv').value):Infinity;activeWords=isWL?rawWords.slice(0,limit):[...rawWords];const tt=get('tt');tt.scrollTop=0;tt.innerHTML='';tt.classList.toggle('as-on',get('as').checked);if(hi){tt.style.whiteSpace='normal';activeWords.forEach(w=>{const s=document.createElement('span');s.textContent=w;tt.appendChild(s)});}else{tt.style.whiteSpace='pre-wrap';tt.textContent=isWL?activeWords.join(' '):pTxt;}const iS=get('ime'),mod=iS.value,kN=iS.options[iS.selectedIndex].text;get('typing-info').textContent=`${kN} • ${mName}`;const i=get('ia');i.value='';bsc=0;sm('typ');i.focus();imeS={wI:false,pK:'',nI:false,altBypass:false,vT:false};timerStarted=false;clearInterval(tmr);get('lt').textContent=get('tl').value+':00';get('ls').textContent=`0 | 0`;get('la').textContent=`0% | 0`;i.onkeydown=(e)=>{if(!timerStarted&&e.key.length===1){timerStarted=true;stT=new Date();const tLim=get('tl').value*60;tmr=setInterval(()=>{const ev=Math.floor((new Date()-stT)/1000),r=tLim-ev;if(r<=0)ft();get('lt').textContent=`${Math.floor(r/60)}:${(r%60).toString().padStart(2,'0')}`},1000);}setTimeout(()=>{i.scrollTop=i.scrollHeight},0);if(e.key==='Backspace')bsc++;imeS.altBypass=e.altKey;if(e.altKey)return;if(mod!=='e'&&/[0-9]/.test(e.key)&&!e.ctrlKey){imeS.nI=true;const c=get('ia'),s=c.selectionStart,v=c.value,k=e.key,isCL=e.getModifierState('CapsLock'),mN=isCL?LM[k]:RM[k];e.preventDefault();c.value=v.slice(0,s)+mN+v.slice(c.selectionEnd);c.setSelectionRange(s+mN.length,s+mN.length);c.dispatchEvent(new Event('input'));return}else imeS.nI=false;if(['Backspace','Delete',' ','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){imeS.vT=false;imeS.wI=false;imeS.pK=''}}}
+get('ia').onbeforeinput=(v)=>{const i=get('ia'),mod=get('ime').value;if(imeS.altBypass||v.inputType==='insertCompositionText')return;if(imeS.nI){v.preventDefault();return}if(mod==='e'||v.inputType.includes('delete'))return;let k=v.data,curVal=i.value,st=i.selectionStart;if((mod==='g'||mod==='c')&&(!k||k===' ')&&curVal.slice(st-2,st)==='\u25cc\u093f'){v.preventDefault();const newVal=curVal.slice(0,st-2)+'\u093f'+(k||'')+curVal.slice(i.selectionEnd);i.value=newVal;i.setSelectionRange(st-1+(k?1:0),st-1+(k?1:0));imeS.wI=false;imeS.pK='';i.dispatchEvent(new Event('input'));return}if(!k||k===' '){imeS.vT=false;imeS.wI=false;imeS.pK='';return}v.preventDefault();let map=IM[mod],char=map[k]||k,en=i.selectionEnd;if(mod!=='e'){let prv=curVal.slice(0,st);if(prv.endsWith('्')){if(VM[char]!==undefined){curVal=prv.slice(0,-1);st--}else if(char==='ा'){curVal=prv.slice(0,-1);st--;char=''}}}if(mod==='g'||mod==='c'){let p=curVal[st-1];if(k==='f'){char='\u25cc\u093f';imeS.wI=true}else if(imeS.wI){if(curVal.slice(st-2,st)==='\u25cc\u093f'){curVal=curVal.slice(0,st-2);st-=2;char=char+'\u093f';imeS.wI=false}else imeS.wI=false}if(k==='k'){if(p==='अ')char=(curVal=curVal.slice(0,-1),st--,'आ'),imeS.vT=true;else if(p==='आ')char=(curVal=curVal.slice(0,-1),st--,'ओ'),imeS.vT=true;else if(p==='ा')char=(curVal=curVal.slice(0,-1),st--,'ो'),imeS.vT=true;else if(p==='ओ')char=(curVal=curVal.slice(0,-1),st--,'औ'),imeS.vT=true;else if(p==='ो')char=(curVal=curVal.slice(0,-1),st--,'ौ'),imeS.vT=true;else imeS.vT=false}if(k==='S'){if(p==='आ')char=(curVal=curVal.slice(0,-1),st--,'औ'),imeS.vT=true;else if(p==='ा')char=(curVal=curVal.slice(0,-1),st--,'ौ'),imeS.vT=true;else if(p==='ए')char=(curVal=curVal.slice(0,-1),st--,'ऐ'),imeS.vT=true;else if(p==='े')char=(curVal=curVal.slice(0,-1),st--,'ै'),imeS.vT=true;else imeS.vT=false}if(k==='W'){if(p==='आ')char=(curVal=curVal.slice(0,-1),st--,'ऑ'),imeS.vT=true;else if(p==='ा')char=(curVal=curVal.slice(0,-1),st--,'ॉ'),imeS.vT=true;else imeS.vT=false}if(k==='a'&&(p==='ॅ'||p==='ॉ')){if(p==='ॅ'){curVal=curVal.slice(0,-1);st--;char='ँ';}else if(p==='ॉ'){curVal=curVal.slice(0,-1);st--;char='ाँ';}imeS.vT=true;}if(imeS.pK!==''){if(k==='Q'){if(p==='उ')char=(curVal=curVal.slice(0,-1),st--,'ऊ');else if(p==='र')char=(curVal=curVal.slice(0,-1),st--,'रू')}if(k==='Z'&&p==='इ')char=(curVal=curVal.slice(0,-1),st--,'ई')}if(!['k','S','W','a','Q','Z'].includes(k)||!imeS.vT)imeS.vT=false}i.value=curVal.slice(0,st)+char+curVal.slice(en);i.setSelectionRange(st+char.length,st+char.length);imeS.pK=k;i.dispatchEvent(new Event('input'))};
+get('ia').oninput=()=>{const i=get('ia');if(!timerStarted&&i.value.length>0){timerStarted=true;stT=new Date();const tLim=get('tl').value*60;tmr=setInterval(()=>{const ev=Math.floor((new Date()-stT)/1000),r=tLim-ev;if(r<=0)ft();get('lt').textContent=`${Math.floor(r/60)}:${(r%60).toString().padStart(2,'0')}`},1000);}setTimeout(()=>{i.scrollTop=i.scrollHeight},0);const val=i.value,typed=val.split(/\s+/),idx=typed.length-1;const hi=get('hi').checked,durSec=Math.max((new Date()-stT)/1000,1),durMin=durSec/60;if(hi){if(!get('wl').checked&&idx>=activeWords.length-10){const batch=rawWords.slice(0,50);activeWords.push(...batch);batch.forEach(w=>{const s=document.createElement('span');s.textContent=w;get('tt').appendChild(s)});}const spans=get('tt').querySelectorAll('span');let cor=0,eval=0;spans.forEach((s,j)=>{s.className='';const t=typed[j]||"",tr=activeWords[j]||"";if(j<idx){const isC=nm(t)===nm(tr);if(isC)cor++;eval++;s.classList.add(isC?'cor':'inc');}else if(j===idx){s.classList.add('active-word');if(get('as').checked)s.scrollIntoView({block:'center',behavior:'smooth'});}});const grossWpm=(val.length/5)/durMin,mist=eval-cor,netWpm=Math.max(0,grossWpm-(mist/durMin));get('ls').textContent=`${Math.round(grossWpm)} | ${Math.round(netWpm)}`;get('la').textContent=`${Math.round(eval?(cor/eval)*100:0)}% | ${eval}`;}else{const tLen=typed.filter(x=>x).length;const wGross=(val.length/5)/durMin;get('ls').textContent=`${Math.round(wGross)} | ${Math.round(wGross)}`;get('la').textContent=`100% | ${tLen}`;}};
+function ft(){clearInterval(tmr);const val=get('ia').value.trim(),typed=val.split(/\s+/).filter(x=>x),durSec=timerStarted?Math.max((new Date()-stT)/1000,1):1,durMin=durSec/60,ignP=parseFloat(get('ip').value)||0;let fMis=0,hMis=0,sumHtml="";const chars=val.length,kdph=(chars*3600)/durSec;let targ=activeWords.slice(0,Math.max(typed.length+50,50)),dp=Array(targ.length+1).fill(0).map(()=>Array(typed.length+1).fill(0));for(let i=0;i<=targ.length;i++)dp[i][0]=i;for(let j=0;j<=typed.length;j++)dp[0][j]=j;for(let i=1;i<=targ.length;i++){for(let j=1;j<=typed.length;j++){if(nm(targ[i-1])===nm(typed[j-1]))dp[i][j]=dp[i-1][j-1];else dp[i][j]=1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);}}let minVal=Infinity,minI=typed.length;for(let k=Math.max(0,typed.length-20);k<=targ.length;k++){if(dp[k][typed.length]<minVal){minVal=dp[k][typed.length];minI=k;}}let i=minI,j=typed.length,res=[];while(i>0||j>0){if(i>0&&j>0&&nm(targ[i-1])===nm(typed[j-1])){res.push(`<span style="color:var(--txt)">${targ[i-1]}</span> `);i--;j--;}else if(i>0&&j>0&&dp[i][j]===dp[i-1][j-1]+1){res.push(`<span style="color:#ef4444">${typed[j-1]}</span><span style="color:#039660">(${targ[i-1]})</span> `);if(targ[i-1].length!==typed[j-1].length)fMis++;else hMis++;i--;j--;}else if(i>0&&(j===0||dp[i][j]===dp[i-1][j]+1)){res.push(`<span style="color:#ef4444;text-decoration:line-through">${targ[i-1]}</span> `);fMis++;i--;}else if(j>0&&(i===0||dp[i][j]===dp[i][j-1]+1)){res.push(`<span style="color:#ef4444">${typed[j-1]}</span> `);fMis++;j--;}}res.reverse();sumHtml=res.join("");const totM=fMis+(hMis/2),ignC=Math.floor(typed.length*ignP/100),nMist=Math.max(0,totM-ignC);const acc=typed.length?Math.max(0,((typed.length-totM)/typed.length)*100):0;const m1Gross=(chars/5)/durMin;const m1Net=Math.max(0,m1Gross-(totM/durMin));const m2Gross=typed.length/durMin;const m2Net=Math.max(0,(typed.length-(totM*10))/durMin);const m3Gross=typed.length/durMin;const m3Net=Math.max(0,(typed.length-(nMist*10))/durMin);let h=`<div class="sg"><div class="mh">Method 1: ${m1Net.toFixed(2)} WPM / ${Math.round(kdph)} KDPH</div><div class="rl"><span>Net Speed</span><span>${m1Net.toFixed(2)} WPM</span></div><div class="rl"><span>Gross Speed</span><span>${m1Gross.toFixed(2)} WPM</span></div><div class="rl"><span>Accuracy</span><span>${acc.toFixed(2)} %</span></div><div class="rl"><span>Total Entries</span><span>${typed.length} Word(s)</span></div><div class="rl"><span>Total Errors</span><span>${totM}</span></div><div class="rl"><span>Backspace Pressed</span><span>${bsc} Times</span></div><div class="rl"><span>Test Duration</span><span>${Math.round(durSec)} Sec</span></div></div>`;h+=`<div class="sg"><div class="mh">Method 2: ${m2Net.toFixed(2)} WPM / ${Math.round(kdph)} KDPH</div><div class="rl"><span>Net Speed</span><span>${m2Net.toFixed(2)} WPM</span></div><div class="rl"><span>Gross Speed</span><span>${m2Gross.toFixed(2)} WPM</span></div><div class="rl"><span>Full Mistakes</span><span>${fMis}</span></div><div class="rl"><span>Half Mistakes</span><span>${hMis}</span></div><div class="rl"><span>Total Mistakes</span><span>${totM}</span></div><div class="rl"><span>Penalty</span><span>10 Words / Error</span></div></div>`;h+=`<div class="sg"><div class="mh">Method 3: ${m3Net.toFixed(2)} WPM / ${Math.round(kdph)} KDPH</div><div class="rl"><span>Net Speed</span><span>${m3Net.toFixed(2)} WPM</span></div><div class="rl"><span>Gross Speed</span><span>${m3Gross.toFixed(2)} WPM</span></div><div class="rl"><span>Total Mistakes</span><span>${totM}</span></div><div class="rl"><span>Ignored (${ignP}%)</span><span>${ignC}</span></div><div class="rl"><span>Net Mistakes</span><span>${nMist}</span></div><div class="rl"><span>Penalty</span><span>10 Words / Error</span></div></div>`;get('rc').innerHTML=h;get('dv').innerHTML=sumHtml;sm('res');}
+init();
 </script>
 </body>
 </html>

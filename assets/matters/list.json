@@ -1,1 +1,4 @@
-
+{
+  "Hindi": ["Matter hindi.txt", "matter2.txt"],
+  "English": ["contract.txt", "policy.txt"]
+}
